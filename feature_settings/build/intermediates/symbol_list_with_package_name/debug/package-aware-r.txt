@@ -1,0 +1,4 @@
+com.nutrition.feature_settings
+id settings_navigation
+layout settings_fragment
+navigation settings_navigation

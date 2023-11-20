@@ -1,0 +1,5 @@
+package presentation
+const val USER_AUTHORIZED_AND_VERIFY_EMAIL = "USER_AUTHORIZED_AND_VERIFY_EMAIL"
+const val USER_AUTHORIZED_WITH_GMAIL = "USER_AUTHORIZED_WITH_GMAIL"
+const val STATE_LOADING = "StateLoading"
+const val STATE_SUCCESS = "StateSuccess"

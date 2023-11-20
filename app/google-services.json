@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "954292325717",
+    "project_id": "caloriecountingzadgee",
+    "storage_bucket": "caloriecountingzadgee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:954292325717:android:1478d5ca8694ad5884f3dc",
+        "android_client_info": {
+          "package_name": "com.nutrition.caloriecountingapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBIXJ5brZk1LEis0iofol3z1RaPLERAKHs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

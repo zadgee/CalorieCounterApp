@@ -1,0 +1,7 @@
+com.nutrition.feature_home
+color black
+drawable rounded_corner_for_screens
+id homeFragment
+id home_navigation
+layout home_fragment
+navigation home_navigation

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rounded_corner_auth_fragment"
+    tools:context="presentation.auth_fragments.SignUpFragment">
+
+
+    <ImageView
+        android:id="@+id/effects"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:src="@drawable/background_screens_effect"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/app_logo"
+        android:layout_width="260dp"
+        android:layout_height="198dp"
+        android:src="@drawable/app_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.052" />
+
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/title_font_splash"
+        android:gravity="center"
+        android:text="@string/sign_up"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.419" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/createAccountButton"
+        android:layout_width="219dp"
+        android:layout_height="54dp"
+        android:background="@drawable/button_shape"
+        android:backgroundTint="@color/linear"
+        android:fontFamily="@font/title_font_splash"
+        android:gravity="center"
+        android:text="@string/create_account"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/alreadyHaveAccountButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordTextField"
+        app:layout_constraintVertical_bias="0.787" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:maxLines="1"
+        android:id="@+id/passwordTextField"
+        android:layout_width="319dp"
+        android:layout_height="65dp"
+        android:background="@drawable/rounded_corner_for_fields"
+        android:clipToOutline="true"
+        android:drawableStart="@drawable/lock"
+        android:drawablePadding="14dp"
+        android:fontFamily="@font/textfields_font"
+        android:hint="@string/password"
+        android:imeOptions="actionDone"
+        android:inputType="textVisiblePassword"
+        android:padding="20dp"
+        android:textColor="@color/grey"
+        android:textColorHint="@color/grey"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:maxLines="1"
+        android:inputType="text"
+        android:focusable="true"
+        android:id="@+id/nameTextField"
+        android:layout_width="319dp"
+        android:layout_height="65dp"
+        android:imeOptions="actionNext"
+        android:background="@drawable/rounded_corner_for_fields"
+        android:clipToOutline="true"
+        android:drawableStart="@drawable/profile"
+        android:drawablePadding="14dp"
+        android:fontFamily="@font/textfields_font"
+        android:hint="@string/name"
+        android:padding="24dp"
+        android:textColor="@color/grey"
+        android:textColorHint="@color/grey"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:maxLines="1"
+        android:id="@+id/emailTextField"
+        android:layout_width="319dp"
+        android:layout_height="65dp"
+        android:background="@drawable/rounded_corner_for_fields"
+        android:clipToOutline="true"
+        android:drawableStart="@drawable/email"
+        android:drawablePadding="14dp"
+        android:fontFamily="@font/textfields_font"
+        android:hint="@string/email"
+        android:imeOptions="actionNext"
+        android:inputType="textEmailAddress"
+        android:padding="20dp"
+        android:textColor="@color/grey"
+        android:textColorHint="@color/grey"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.65" />
+
+    <TextView
+        android:id="@+id/nameError"
+        android:layout_width="201dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/textfields_font"
+        android:textColor="@color/red"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.203"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameTextField" />
+
+    <TextView
+        android:id="@+id/emailError"
+        android:layout_width="201dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/textfields_font"
+        android:textColor="@color/red"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.203"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailTextField" />
+
+    <TextView
+        android:id="@+id/passwordError"
+        android:layout_width="199dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/textfields_font"
+        android:textColor="@color/red"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/createAccountButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.201"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordTextField"
+        app:layout_constraintVertical_bias="0.105" />
+
+    <TextView
+        android:id="@+id/alreadyHaveAccountButton"
+        android:layout_width="178dp"
+        android:layout_height="21dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:fontFamily="@font/title_font_splash"
+        android:text="@string/already_have_an_account"
+        android:textColor="@color/linear"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/hideOrShowPasswordButton"
+        android:layout_width="31dp"
+        android:layout_height="27dp"
+        android:src="@drawable/show_password"
+        app:layout_constraintBottom_toBottomOf="@+id/passwordTextField"
+        app:layout_constraintEnd_toEndOf="@+id/passwordTextField"
+        app:layout_constraintHorizontal_bias="0.927"
+        app:layout_constraintStart_toStartOf="@+id/passwordTextField"
+        app:layout_constraintTop_toTopOf="@+id/passwordTextField"
+        app:layout_constraintVertical_bias="0.552" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

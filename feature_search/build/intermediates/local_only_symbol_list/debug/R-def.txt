@@ -1,0 +1,5 @@
+R_DEF: Internal format may change without notice
+local
+id search_navigation
+layout fragment_search
+navigation search_navigation

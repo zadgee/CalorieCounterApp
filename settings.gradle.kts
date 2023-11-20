@@ -13,10 +13,11 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CalorieCoutingApp"
+rootProject.name = "CalorieCountingApp"
 include(":app")
-include(":di")
 include(":feature_home")
 include(":feature_search")
 include(":feature_settings")
 include(":feature_auth")
+include(":core")
+include(":db")

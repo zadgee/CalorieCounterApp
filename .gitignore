@@ -21,3 +21,7 @@ local.properties
 /feature_search/src/test
 /feature_auth/src/test
 /feature_auth/src/androidTest
+/db/src/androidTest
+/db/src/test
+/feature_settings/src/test
+/feature_settings/src/androidTest
