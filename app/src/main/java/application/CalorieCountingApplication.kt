@@ -4,6 +4,7 @@ import app.DaggerDatabaseComponent
 import auth_application.DaggerAuthComponent
 import data.di.AuthModule
 import data.di.RoomModule
+import domain.di.WorkerModule
 
 class CalorieCountingApplication :Application() {
 
@@ -19,6 +20,7 @@ class CalorieCountingApplication :Application() {
             DaggerAuthComponent
                 .builder()
                 .authModule(AuthModule(this))
+                .workerModule(WorkerModule(this))
                 .databaseComponent(databaseComponent)
                 .buildAuthComponent()
         }

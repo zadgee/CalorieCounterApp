@@ -1,5 +1,6 @@
 com.nutrition.feature_auth
 color black
+color customBlack
 color grey
 color linear
 color orange
@@ -9,6 +10,7 @@ color white
 drawable app_logo
 drawable background
 drawable background_screens_effect
+drawable baseline_arrow_back_ios_24
 drawable button_shape
 drawable congrats_image
 drawable email
@@ -17,6 +19,7 @@ drawable lock
 drawable password_visibility_off
 drawable profile
 drawable rounded_corner_auth_fragment
+drawable rounded_corner_for_back_button
 drawable rounded_corner_for_fields
 drawable show_password
 font subtitle_font
@@ -24,12 +27,17 @@ font textfields_font
 font title_font_splash
 id action_congratsFragment_to_homeFragment
 id action_emailVerificationFragment_to_congratsFragment
+id action_emailVerificationFragment_to_signUpFragment
+id action_forgotPasswordFragment_to_signInFragment
 id action_signInFragment_to_emailVerificationFragment
+id action_signInFragment_to_forgotPasswordFragment
 id action_signInFragment_to_homeFragment
 id action_signUpFragment_to_emailVerificationFragment
 id action_signUpFragment_to_home_navigation
 id action_signUpFragment_to_signInFragment
+id adView
 id alreadyHaveAccountButton
+id already_restore_password
 id app_logo
 id auth_navigation
 id backgroundEffects
@@ -39,7 +47,9 @@ id effects
 id emailError
 id emailTextField
 id emailVerificationFragment
+id forgotPasswordFragment
 id forgotPasswordText
+id goBackButton
 id goHomeButton
 id googleButton
 id hideOrShowPasswordButton
@@ -50,6 +60,7 @@ id login_to_your_account_txt
 id messageText
 id nameError
 id nameTextField
+id nextButton
 id passwordError
 id passwordTextField
 id progressBar
@@ -58,10 +69,12 @@ id signInFragment
 id signUpFragment
 id textView
 id textView2
+id textView4
 id title
 id verifyEmailButton
 layout fragment_congrats
 layout fragment_email_verification
+layout fragment_forgot_password
 layout fragment_sign_in
 layout sign_up_fragment
 navigation auth_navigation

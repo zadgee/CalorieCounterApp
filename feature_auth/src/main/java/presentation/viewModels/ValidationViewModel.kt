@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import presentation.event.ValidationEvent
+import presentation.event.ValidationEventWhenRestoringPassword
 import presentation.event.ValidationEventWhenSignIn
 
 class ValidationViewModel:ViewModel() {
@@ -48,12 +49,26 @@ class ValidationViewModel:ViewModel() {
         }
     }
 
+    fun checkEventWhenRestoringPassword(
+        eventWhenRestoringPassword: ValidationEventWhenRestoringPassword
+    ){
+        viewModelScope.launch {
+            when(eventWhenRestoringPassword){
+                is ValidationEventWhenRestoringPassword.ValidationProcess ->{
+                    validateDataWhenRestoringPassword(
+                        eventWhenRestoringPassword.email
+                    )
+                }
+            }
+        }
+    }
+
     private fun validateData(
         name: String,
         email: String,
         password: String
     ){
-      viewModelScope.launch(Dispatchers.Default) {
+      viewModelScope.launch(Dispatchers.IO) {
           val validateName = validateNameUseCase.validate(name)
           val validateEmail = validateEmail.validate(email)
           val validatePassword = validatePassword.validate(password)
@@ -88,7 +103,7 @@ class ValidationViewModel:ViewModel() {
         email: String,
         password: String
     ){
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             val validateEmail = validateEmail.validate(email)
             val validatePassword = validatePassword.validate(password)
             val hasError = listOf(
@@ -102,6 +117,36 @@ class ValidationViewModel:ViewModel() {
                     ValidationModel(
                         emailError = validateEmail.error,
                         passwordError = validatePassword.error,
+                        nameError = null
+                    )
+                )
+            } else{
+                _fieldsState.emit(
+                    ValidationModel(
+                        nameError = null,
+                        emailError = null,
+                        passwordError = null
+                    )
+                )
+            }
+        }
+    }
+
+    private fun validateDataWhenRestoringPassword(
+        email: String
+    ){
+        viewModelScope.launch(Dispatchers.IO) {
+            val validateEmail = validateEmail.validate(email)
+            val hasError = listOf(
+                validateEmail,
+            ).any {
+                !it.successful
+            }
+            if(hasError){
+                _fieldsState.emit(
+                    ValidationModel(
+                        emailError = validateEmail.error,
+                        passwordError = null,
                         nameError = null
                     )
                 )

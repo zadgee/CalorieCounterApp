@@ -17,4 +17,5 @@ interface AuthenticationRepository{
     val user: FirebaseUser?
     suspend fun getUserNameFromFireStoreByEmail(email:String): Flow<String>
     suspend fun gmailAuth(credential: AuthCredential)
+    suspend fun sendPasswordResetEmail(email: String)
 }

@@ -26,6 +26,7 @@ private const val USER_TO_FIRE_STORE_ERROR = "SavingToFireStoreTAG"
 
 
 
+
 class AuthenticationRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val db:FirebaseFirestore,
@@ -69,6 +70,16 @@ class AuthenticationRepositoryImpl @Inject constructor(
                 }.await()
             }
         }
+    }
+
+    override suspend fun sendPasswordResetEmail(email: String) {
+        firebaseAuth.sendPasswordResetEmail(email)
+            .addOnSuccessListener {
+                Log.d("ResetEmail","Success:$it")
+            }.addOnFailureListener {
+                Log.d("ResetEmail","Failure:$it")
+            }
+            .await()
     }
 
     override suspend fun signUp(email: String, password: String): SignUpEvent {

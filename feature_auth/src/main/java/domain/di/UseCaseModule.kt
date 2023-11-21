@@ -11,6 +11,7 @@ import domain.usecase.GmailAuthUseCase
 import domain.usecase.LoginUseCase
 import domain.usecase.ReloadUserUseCase
 import domain.usecase.SendEmailVerificationLetterUseCase
+import domain.usecase.SendPasswordResetEmailUseCase
 import domain.usecase.SignOutWhileUsingEmailPasswordUseCase
 import domain.usecase.SignOutWhileUsingGmailAuth
 import domain.usecase.SignUpUseCase
@@ -128,6 +129,16 @@ class UseCaseModule {
         repository: AuthenticationRepository
     ): GmailAuthUseCase{
         return GmailAuthUseCase(
+            repository
+        )
+    }
+
+    @Provides
+    @AuthScope
+    fun provideSendPasswordResetEmailUseCase(
+        repository: AuthenticationRepository
+    ): SendPasswordResetEmailUseCase{
+        return SendPasswordResetEmailUseCase(
             repository
         )
     }

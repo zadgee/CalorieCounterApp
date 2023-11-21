@@ -3,6 +3,8 @@ import android.content.IntentSender
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.AuthCredential
@@ -22,6 +24,7 @@ import domain.usecase.GmailAuthUseCase
 import domain.usecase.LoginUseCase
 import domain.usecase.ReloadUserUseCase
 import domain.usecase.SendEmailVerificationLetterUseCase
+import domain.usecase.SendPasswordResetEmailUseCase
 import domain.usecase.SignOutWhileUsingEmailPasswordUseCase
 import domain.usecase.SignOutWhileUsingGmailAuth
 import domain.usecase.SignUpUseCase
@@ -29,6 +32,7 @@ import domain.usecases.GetGmailUserUseCase
 import domain.usecases.GetUserFromDatabaseUseCase
 import domain.usecases.InsertGmailUserUseCase
 import domain.usecases.InsertUserUseCase
+import domain.worker.EmailVerificationWorker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,6 +41,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class AuthenticationViewModel @Inject constructor(
@@ -57,7 +62,9 @@ class AuthenticationViewModel @Inject constructor(
     private val gmailAuthUseCase: GmailAuthUseCase,
     private val insertGmailUserUseCase: InsertGmailUserUseCase,
     private val getGmailUserUseCase: GetGmailUserUseCase,
-    private val getUserFromDatabaseUseCase: GetUserFromDatabaseUseCase
+    private val getUserFromDatabaseUseCase: GetUserFromDatabaseUseCase,
+    private val sendPasswordResetEmailUseCase: SendPasswordResetEmailUseCase,
+    val workManager: WorkManager
 ) : ViewModel() {
 
     private val _signUpState = MutableStateFlow<SignUpEvent>(SignUpEvent.Loading)
@@ -66,12 +73,19 @@ class AuthenticationViewModel @Inject constructor(
     val signInState = _signInState.asStateFlow()
     val isEmailVerified get() = getFirebaseUserUseCase.user()?.isEmailVerified ?:false
     private val firebaseUser = getFirebaseUserUseCase.user()
+
     private val _userNameFlow = MutableSharedFlow<String>()
     val userNameFlow = _userNameFlow.asSharedFlow()
+
     private val _gmailUserFlow = MutableStateFlow<GmailUserEntity?>(null)
     val gmailUserFlow = _gmailUserFlow.asStateFlow()
+
     private val _defaultAuthorizationUserFlow = MutableStateFlow<UserEntity?>(null)
     val defaultAuthorizationUserFlow = _defaultAuthorizationUserFlow.asStateFlow()
+
+    val request = OneTimeWorkRequestBuilder<EmailVerificationWorker>()
+        .setInitialDelay(7,TimeUnit.MINUTES)
+        .build()
 
 
     fun signUp(
@@ -209,6 +223,12 @@ class AuthenticationViewModel @Inject constructor(
         }
     }
 
+    fun sendResetPasswordEmail(email:String){
+        viewModelScope.launch(Dispatchers.IO) {
+            sendPasswordResetEmailUseCase.send(email)
+        }
+    }
+
 }
 
 class AuthenticationViewModelFactory @Inject constructor(
@@ -229,7 +249,9 @@ class AuthenticationViewModelFactory @Inject constructor(
     private val gmailAuthUseCase: GmailAuthUseCase,
     private val insertGmailUserUseCase: InsertGmailUserUseCase,
     private val getGmailUserUseCase: GetGmailUserUseCase,
-    private val getUserFromDatabaseUseCase: GetUserFromDatabaseUseCase
+    private val getUserFromDatabaseUseCase: GetUserFromDatabaseUseCase,
+    private val sendPasswordResetEmailUseCase: SendPasswordResetEmailUseCase,
+    private val workManager: WorkManager
 ):ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
          if(modelClass.isAssignableFrom(AuthenticationViewModel::class.java)){
@@ -251,7 +273,9 @@ class AuthenticationViewModelFactory @Inject constructor(
                  gmailAuthUseCase,
                  insertGmailUserUseCase,
                  getGmailUserUseCase,
-                 getUserFromDatabaseUseCase
+                 getUserFromDatabaseUseCase,
+                 sendPasswordResetEmailUseCase,
+                 workManager
              ) as T
          }else{
              throw IllegalArgumentException("Unknown ViewModel class")

@@ -7,6 +7,7 @@ import auth_application.AuthComponent
 import auth_application.DaggerAuthComponent
 import data.di.AuthModule
 import data.di.RoomModule
+import domain.di.WorkerModule
 
 fun authComponent(
     context: Context
@@ -14,6 +15,7 @@ fun authComponent(
     return DaggerAuthComponent
         .builder()
         .databaseComponent(databaseComponent(context))
+        .workerModule(WorkerModule(context))
         .authModule(AuthModule(context))
         .buildAuthComponent()
 }

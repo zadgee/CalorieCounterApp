@@ -48,31 +48,30 @@ private var sharedPreferences:SharedPreferences?=null
             USER_AUTHORIZED_WITH_GMAIL,false
         )
 
-        if(isUserSignedInWithGmail == true){
-            Log.d("TAG","Home Navigation cause' of gmail sign in")
-            findNavController().navigate(R.id.action_splashFragment_home_navigation)
-        }
-        else if(isUserSignedInAndVerified == true){
-            Log.d("TAG","Home Navigation")
-            findNavController().navigate(R.id.action_splashFragment_home_navigation)
-        }else if(isUserClickedNextButton == true){
-            Log.d("TAG","Auth Navigation")
-            findNavController().navigate(R.id.action_splashFragment_auth_navigation)
-        }else{
-            binding?.nextButton?.setOnClickListener {
-                lifecycleScope.launch {
-                    sharedPreferences?.edit()?.putBoolean(SKIP_SPLASH,true)?.apply()
-                    delay(5)
-                    findNavController().navigate(R.id.action_splashFragment_auth_navigation)
+        lifecycleScope.launch {
+            if(isUserSignedInWithGmail == true){
+                Log.d("TAG","Home Navigation cause' of gmail sign in")
+                findNavController().navigate(R.id.action_splashFragment_home_navigation)
+            }
+            else if(isUserSignedInAndVerified == true){
+                Log.d("TAG","Home Navigation")
+                findNavController().navigate(R.id.action_splashFragment_home_navigation)
+            }else if(isUserClickedNextButton == true){
+                Log.d("TAG","Auth Navigation")
+                findNavController().navigate(R.id.action_splashFragment_auth_navigation)
+            }else{
+                binding?.nextButton?.setOnClickListener {
+                    lifecycleScope.launch {
+                        sharedPreferences?.edit()?.putBoolean(SKIP_SPLASH,true)?.apply()
+                        delay(5)
+                        findNavController().navigate(R.id.action_splashFragment_auth_navigation)
                 }
             }
         }
     }
-
-
+}
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
     }
-
 }

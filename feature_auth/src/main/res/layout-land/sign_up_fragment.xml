@@ -26,7 +26,7 @@
         android:fontFamily="@font/title_font_splash"
         android:gravity="center"
         android:text="@string/sign_up"
-        android:textColor="@color/black"
+        android:textColor="@color/customBlack"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

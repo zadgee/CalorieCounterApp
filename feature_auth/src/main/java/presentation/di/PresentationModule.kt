@@ -1,4 +1,5 @@
 package presentation.di
+import androidx.work.WorkManager
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import dagger.Module
@@ -13,6 +14,7 @@ import domain.usecase.GmailAuthUseCase
 import domain.usecase.LoginUseCase
 import domain.usecase.ReloadUserUseCase
 import domain.usecase.SendEmailVerificationLetterUseCase
+import domain.usecase.SendPasswordResetEmailUseCase
 import domain.usecase.SignOutWhileUsingEmailPasswordUseCase
 import domain.usecase.SignOutWhileUsingGmailAuth
 import domain.usecase.SignUpUseCase
@@ -44,7 +46,9 @@ class PresentationModule {
         gmailAuthUseCase: GmailAuthUseCase,
         insertGmailUserUseCase: InsertGmailUserUseCase,
         getGmailUserUseCase: GetGmailUserUseCase,
-        getUserFromDatabaseUseCase: GetUserFromDatabaseUseCase
+        getUserFromDatabaseUseCase: GetUserFromDatabaseUseCase,
+        sendPasswordResetEmailUseCase: SendPasswordResetEmailUseCase,
+        workManager: WorkManager
     ):AuthenticationViewModelFactory{
        return AuthenticationViewModelFactory(
            addUserToFireStoreUseCase,
@@ -64,7 +68,9 @@ class PresentationModule {
            gmailAuthUseCase,
            insertGmailUserUseCase,
            getGmailUserUseCase,
-           getUserFromDatabaseUseCase
+           getUserFromDatabaseUseCase,
+           sendPasswordResetEmailUseCase,
+           workManager
        )
     }
 }

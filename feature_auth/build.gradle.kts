@@ -36,8 +36,7 @@ android {
 
 
 dependencies {
-    val daggerVersion = "2.48"
-    val lifecycleVersion = "2.6.2"
+    implementation("com.google.android.gms:play-services-ads:22.5.0")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -48,13 +47,14 @@ dependencies {
     implementation(project(":core"))
 
     // db
-    api(project(":db"))
+    implementation(project(":db"))
 
     // Navigation
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
 
     // Lifecycle
+    val lifecycleVersion = "2.6.2"
     implementation("androidx.lifecycle:lifecycle-runtime-ktx")
 
     // Testing
@@ -65,6 +65,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 
     // Dagger
+    val daggerVersion = "2.48"
     compileOnly("com.google.dagger:dagger:$daggerVersion")
     ksp ("com.google.dagger:dagger-compiler:$daggerVersion")
 
@@ -83,6 +84,10 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.0")
     implementation("androidx.room:room-ktx:2.6.0")
 
+    // WorkManager
+    val workManagerVersion = "2.8.1"
+    implementation("androidx.work:work-runtime:$workManagerVersion")
+    implementation("androidx.work:work-runtime-ktx:$workManagerVersion")
     
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")

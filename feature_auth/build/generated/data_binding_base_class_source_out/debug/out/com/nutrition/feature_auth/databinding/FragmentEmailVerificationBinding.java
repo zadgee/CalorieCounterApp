@@ -13,6 +13,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
+import com.google.android.gms.ads.AdView;
 import com.nutrition.feature_auth.R;
 import java.lang.NullPointerException;
 import java.lang.Override;
@@ -21,6 +22,9 @@ import java.lang.String;
 public final class FragmentEmailVerificationBinding implements ViewBinding {
   @NonNull
   private final ConstraintLayout rootView;
+
+  @NonNull
+  public final AdView adView;
 
   @NonNull
   public final ImageView appLogo;
@@ -41,10 +45,12 @@ public final class FragmentEmailVerificationBinding implements ViewBinding {
   public final AppCompatButton verifyEmailButton;
 
   private FragmentEmailVerificationBinding(@NonNull ConstraintLayout rootView,
-      @NonNull ImageView appLogo, @NonNull ImageView effects, @NonNull TextView messageText,
-      @NonNull ProgressBar progressBar, @NonNull TextView sendEmailVerificationLetterRetry,
+      @NonNull AdView adView, @NonNull ImageView appLogo, @NonNull ImageView effects,
+      @NonNull TextView messageText, @NonNull ProgressBar progressBar,
+      @NonNull TextView sendEmailVerificationLetterRetry,
       @NonNull AppCompatButton verifyEmailButton) {
     this.rootView = rootView;
+    this.adView = adView;
     this.appLogo = appLogo;
     this.effects = effects;
     this.messageText = messageText;
@@ -80,6 +86,12 @@ public final class FragmentEmailVerificationBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.adView;
+      AdView adView = ViewBindings.findChildViewById(rootView, id);
+      if (adView == null) {
+        break missingId;
+      }
+
       id = R.id.app_logo;
       ImageView appLogo = ViewBindings.findChildViewById(rootView, id);
       if (appLogo == null) {
@@ -116,8 +128,8 @@ public final class FragmentEmailVerificationBinding implements ViewBinding {
         break missingId;
       }
 
-      return new FragmentEmailVerificationBinding((ConstraintLayout) rootView, appLogo, effects,
-          messageText, progressBar, sendEmailVerificationLetterRetry, verifyEmailButton);
+      return new FragmentEmailVerificationBinding((ConstraintLayout) rootView, adView, appLogo,
+          effects, messageText, progressBar, sendEmailVerificationLetterRetry, verifyEmailButton);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

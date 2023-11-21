@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#000000</color>
+    <color name="customBlack">#09051C</color>
     <color name="grey">#3B3B3B</color>
     <color name="linear">#53E88B</color>
     <color name="orange">#DA6317</color>

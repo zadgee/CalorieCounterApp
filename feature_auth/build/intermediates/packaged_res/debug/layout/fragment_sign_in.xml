@@ -25,7 +25,7 @@
         android:layout_gravity="center_horizontal"
         android:fontFamily="@font/title_font_splash"
         android:text="@string/login_to_your_account"
-        android:textColor="@color/black"
+        android:textColor="@color/customBlack"
         android:textSize="28sp"
         app:layout_constraintBottom_toBottomOf="@+id/backgroundEffects"
         app:layout_constraintEnd_toEndOf="@+id/backgroundEffects"

@@ -23,6 +23,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.firebase.auth.GoogleAuthProvider
 import com.nutrition.feature_auth.R
 import com.nutrition.feature_auth.databinding.FragmentSignInBinding
@@ -47,7 +53,7 @@ class SignInFragment : Fragment() {
     private var binding : FragmentSignInBinding? = null
     private val validationViewModel by viewModels<ValidationViewModel>()
     private var sharedPreferences: SharedPreferences?=null
-
+    private var ad: InterstitialAd? = null
     @Inject
     lateinit var viewModelFactory: AuthenticationViewModelFactory
     private val authenticationViewModel:AuthenticationViewModel by viewModels {
@@ -90,9 +96,8 @@ class SignInFragment : Fragment() {
                                 )
                             )
                             delay(20)
-                            findNavController().navigate(
-                                R.id.action_signInFragment_to_homeFragment
-                            )
+                            loadFullScreenAd()
+                            initStates()
                          }
                     }
                 }catch (e:Exception){
@@ -127,6 +132,13 @@ class SignInFragment : Fragment() {
             "Preferences", Context.MODE_PRIVATE
         )
         binding?.forgotPasswordText?.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        binding?.forgotPasswordText?.setOnClickListener {
+             lifecycleScope.launch {
+                 findNavController().navigate(
+                     R.id.action_signInFragment_to_forgotPasswordFragment
+                 )
+             }
+        }
         binding?.hideOrShowPasswordButton?.setOnClickListener {
             val passwordEditText = binding?.passwordTextField
             val currentInputType = passwordEditText?.inputType ?: 0
@@ -251,10 +263,8 @@ class SignInFragment : Fragment() {
                                             sharedPreferences?.edit()?.apply {
                                                 putBoolean(USER_AUTHORIZED_AND_VERIFY_EMAIL,true)
                                             }?.apply()
-                                            delay(20)
-                                            findNavController().navigate(
-                                                R.id.action_signInFragment_to_homeFragment
-                                            )
+                                            loadFullScreenAd()
+                                            initStates()
                                         }
                                     }
                                 }
@@ -272,6 +282,51 @@ class SignInFragment : Fragment() {
                     }
                 }
             }
+        }
+    }
+
+    private  fun loadFullScreenAd(){
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(requireContext(),"ca-app-pub-9481709154583117/5969237894"
+            ,adRequest,
+            object : InterstitialAdLoadCallback(){
+                override fun onAdLoaded(p0: InterstitialAd) {
+                    ad = p0
+                }
+
+                override fun onAdFailedToLoad(p0: LoadAdError) {
+                    ad = null
+                    Log.d("AdError","ad failed to load: ${p0.message}")
+                }
+            })
+    }
+
+    private suspend fun initStates(){
+        if(ad != null){
+            ad?.fullScreenContentCallback =
+                object : FullScreenContentCallback(){
+                    override fun onAdFailedToShowFullScreenContent(
+                        p0: AdError
+                    ) {
+                        super.onAdFailedToShowFullScreenContent(
+                            p0
+                        )
+                        ad = null
+                        loadFullScreenAd()
+                    }
+
+                    override fun onAdDismissedFullScreenContent() {
+                        super.onAdDismissedFullScreenContent()
+                        findNavController().navigate(
+                            R.id.action_signInFragment_to_homeFragment
+                        )
+                    }
+                }
+            ad?.show(requireActivity())
+        } else {
+            findNavController().navigate(
+                R.id.action_signInFragment_to_homeFragment
+            )
         }
     }
 

@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/title_font_splash"
         android:text="Your profile Is Ready To Use"
-        android:textColor="@color/black"
+        android:textColor="@color/customBlack"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
