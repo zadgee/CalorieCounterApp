@@ -13,11 +13,13 @@
         android:label="@string/appName"
         android:roundIcon="@drawable/app_logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CalorieCountingApp"
+        android:theme="@style/Base.V21.Theme.CalorieCountingApp"
         tools:targetApi="31">
         <activity
             android:name="application.MainActivity"
-            android:exported="true">
+            android:screenOrientation="portrait"
+            android:exported="true"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

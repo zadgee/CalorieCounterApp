@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.test.db"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 21
@@ -38,7 +38,6 @@ android {
 }
 
 dependencies {
-    val daggerVersion = "2.48"
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -53,6 +52,7 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.0")
 
     // Dagger
+    val daggerVersion = "2.48"
     compileOnly("com.google.dagger:dagger:$daggerVersion")
     ksp ("com.google.dagger:dagger-compiler:$daggerVersion")
 }

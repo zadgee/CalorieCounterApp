@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="splashScreen.SplashFragment"
-    android:background="@drawable/rounded_corners_for_screens">
+    style="@style/backgroundColor">
 
 
     <ImageView
@@ -55,7 +55,7 @@
         android:fontFamily="@font/title_font_splash"
         android:gravity="center"
         android:text="Welcome"
-        android:textColor="@color/black"
+        style="@style/textColors"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,6 +65,7 @@
         app:layout_constraintVertical_bias="0.549" />
 
     <TextView
+        style="@style/textColors"
         android:id="@+id/subtitle"
         android:layout_width="218dp"
         android:layout_height="73dp"

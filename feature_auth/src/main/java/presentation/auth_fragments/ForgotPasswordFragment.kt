@@ -2,7 +2,6 @@ package presentation.auth_fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.fragment.app.Fragment
@@ -18,11 +17,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
 import com.nutrition.feature_auth.R
 import com.nutrition.feature_auth.databinding.FragmentForgotPasswordBinding
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import presentation.event.ValidationEventWhenRestoringPassword
 import presentation.viewModels.AuthenticationViewModel
 import presentation.viewModels.AuthenticationViewModelFactory
@@ -39,12 +38,10 @@ class ForgotPasswordFragment : Fragment() {
         viewModelFactory
     }
 
-    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val adRequest = AdRequest.Builder().build()
         binding?.adView?.loadAd(adRequest)
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
 
@@ -56,6 +53,7 @@ class ForgotPasswordFragment : Fragment() {
 
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -67,6 +65,10 @@ class ForgotPasswordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val adRequest = AdRequest.Builder().build()
+        binding?.adView?.loadAd(adRequest)
+        binding?.adView?.visibility = VISIBLE
+
         binding?.goBackButton?.setOnClickListener {
             findNavController().navigate(R.id.action_forgotPasswordFragment_to_signInFragment)
         }
@@ -74,23 +76,27 @@ class ForgotPasswordFragment : Fragment() {
             findNavController().navigate(R.id.action_forgotPasswordFragment_to_signInFragment)
         }
         binding?.nextButton?.setOnClickListener {
-            handleRestorePassword(
-                context = view.context
-            )
+            lifecycleScope.launch {
+                handleRestorePassword(
+                    context = view.context
+                )
+            }
         }
         binding?.emailTextField?.setOnEditorActionListener {
                 _, actionId, event ->
             if(event != null && event.keyCode == KeyEvent.KEYCODE_ENTER
                 || actionId == EditorInfo.IME_ACTION_DONE){
-                handleRestorePassword(
-                    context = view.context
-                )
+                lifecycleScope.launch {
+                    handleRestorePassword(
+                        context = view.context
+                    )
+                }
             }
             return@setOnEditorActionListener true
         }
     }
 
-    private fun handleRestorePassword(
+    private suspend fun handleRestorePassword(
         context: Context
     ){
         val email = binding?.emailTextField?.text.toString()
@@ -108,9 +114,12 @@ class ForgotPasswordFragment : Fragment() {
                         binding?.emailError?.visibility = VISIBLE
                     } else {
                         binding?.emailError?.visibility = INVISIBLE
-                        authenticationViewModel.sendResetPasswordEmail(email)
-                        delay(15)
-                        Toast.makeText(context,"Check your email",Toast.LENGTH_SHORT).show()
+                        withContext(Dispatchers.IO){
+                            authenticationViewModel.sendResetPasswordEmail(email)
+                            Toast.makeText(
+                                context,"Check your email",Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
                 }
             }
@@ -126,6 +135,11 @@ class ForgotPasswordFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding?.adView?.resume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding?.adView?.destroy()
     }
 
     override fun onPause() {

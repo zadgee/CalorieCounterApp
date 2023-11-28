@@ -28,6 +28,7 @@ interface AuthComponent{
     @Component.Builder
     interface Builder{
         fun authModule(authModule: AuthModule):Builder
+        fun useCaseModule(useCaseModule: UseCaseModule):Builder
         fun workerModule(workerModule: WorkerModule):Builder
         fun databaseComponent(databaseComponent: DatabaseComponent):Builder
         fun buildAuthComponent():AuthComponent

@@ -1,8 +1,10 @@
 package domain.repository
 import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
 import domain.event.SignInEvent
 import domain.event.SignUpEvent
+import domain.models.user.GmailAuthorizationData
 import kotlinx.coroutines.flow.Flow
 
 interface AuthenticationRepository{
@@ -16,6 +18,8 @@ interface AuthenticationRepository{
     suspend fun deleteUserFromFirebase()
     val user: FirebaseUser?
     suspend fun getUserNameFromFireStoreByEmail(email:String): Flow<String>
-    suspend fun gmailAuth(credential: AuthCredential)
+    suspend fun gmailAuth(credential: AuthCredential): AuthResult?
     suspend fun sendPasswordResetEmail(email: String)
+    suspend fun getFirebaseUserData(): GmailAuthorizationData
+    suspend fun isUserExist(email:String):Boolean
 }

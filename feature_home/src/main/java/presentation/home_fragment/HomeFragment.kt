@@ -1,22 +1,22 @@
 package presentation.home_fragment
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.nutrition.feature_home.databinding.HomeFragmentBinding
+import com.nutrition.feature_home.R
+import com.nutrition.feature_home.databinding.FragmentHomeBinding
+
 
 class HomeFragment : Fragment() {
-private var binding : HomeFragmentBinding? = null
-
+private var binding : FragmentHomeBinding? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = HomeFragmentBinding.inflate(layoutInflater)
+        binding = FragmentHomeBinding.inflate(layoutInflater)
         return binding?.root
     }
 

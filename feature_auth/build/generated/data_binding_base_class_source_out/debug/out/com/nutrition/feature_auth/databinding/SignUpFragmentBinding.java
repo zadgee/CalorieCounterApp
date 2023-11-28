@@ -31,20 +31,7 @@ public final class SignUpFragmentBinding implements ViewBinding {
   @NonNull
   public final AppCompatButton createAccountButton;
 
-  /**
-   * This binding is not available in all configurations.
-   * <p>
-   * Present:
-   * <ul>
-   *   <li>layout/</li>
-   * </ul>
-   *
-   * Absent:
-   * <ul>
-   *   <li>layout-land/</li>
-   * </ul>
-   */
-  @Nullable
+  @NonNull
   public final ImageView effects;
 
   @NonNull
@@ -73,7 +60,7 @@ public final class SignUpFragmentBinding implements ViewBinding {
 
   private SignUpFragmentBinding(@NonNull ConstraintLayout rootView,
       @NonNull TextView alreadyHaveAccountButton, @NonNull ImageView appLogo,
-      @NonNull AppCompatButton createAccountButton, @Nullable ImageView effects,
+      @NonNull AppCompatButton createAccountButton, @NonNull ImageView effects,
       @NonNull TextView emailError, @NonNull TextInputEditText emailTextField,
       @NonNull ImageView hideOrShowPasswordButton, @NonNull TextView nameError,
       @NonNull TextInputEditText nameTextField, @NonNull TextView passwordError,
@@ -140,6 +127,9 @@ public final class SignUpFragmentBinding implements ViewBinding {
 
       id = R.id.effects;
       ImageView effects = ViewBindings.findChildViewById(rootView, id);
+      if (effects == null) {
+        break missingId;
+      }
 
       id = R.id.emailError;
       TextView emailError = ViewBindings.findChildViewById(rootView, id);

@@ -2,12 +2,14 @@ package domain.di
 import auth_application.AuthScope
 import dagger.Module
 import dagger.Provides
+import domain.models.user.GmailAuthorizationData
 import domain.repository.AuthenticationRepository
 import domain.usecase.AddUserToFireStoreUseCase
 import domain.usecase.DeleteUserFromFirebaseUseCase
 import domain.usecase.GetUserNameFromFireStoreByEmail
 import domain.usecase.GetFirebaseUserUseCase
 import domain.usecase.GmailAuthUseCase
+import domain.usecase.IsUserExistUseCase
 import domain.usecase.LoginUseCase
 import domain.usecase.ReloadUserUseCase
 import domain.usecase.SendEmailVerificationLetterUseCase
@@ -139,6 +141,17 @@ class UseCaseModule {
         repository: AuthenticationRepository
     ): SendPasswordResetEmailUseCase{
         return SendPasswordResetEmailUseCase(
+            repository
+        )
+    }
+
+
+    @Provides
+    @AuthScope
+    fun provideIsUserExistUseCase(
+        repository: AuthenticationRepository
+    ): IsUserExistUseCase{
+        return IsUserExistUseCase(
             repository
         )
     }

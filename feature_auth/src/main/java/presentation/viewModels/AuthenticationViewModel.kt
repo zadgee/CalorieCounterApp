@@ -8,7 +8,7 @@ import androidx.work.WorkManager
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.AuthResult
 import data.annotations.GmailSignIn
 import data.annotations.GmailSignUp
 import domain.models.UserEntity
@@ -18,9 +18,11 @@ import domain.models.GmailUserEntity
 import domain.models.user.GmailAuthorizationData
 import domain.usecase.AddUserToFireStoreUseCase
 import domain.usecase.DeleteUserFromFirebaseUseCase
+import domain.usecase.GetFirebaseUserDataUseCase
 import domain.usecase.GetUserNameFromFireStoreByEmail
 import domain.usecase.GetFirebaseUserUseCase
 import domain.usecase.GmailAuthUseCase
+import domain.usecase.IsUserExistUseCase
 import domain.usecase.LoginUseCase
 import domain.usecase.ReloadUserUseCase
 import domain.usecase.SendEmailVerificationLetterUseCase
@@ -28,8 +30,6 @@ import domain.usecase.SendPasswordResetEmailUseCase
 import domain.usecase.SignOutWhileUsingEmailPasswordUseCase
 import domain.usecase.SignOutWhileUsingGmailAuth
 import domain.usecase.SignUpUseCase
-import domain.usecases.GetGmailUserUseCase
-import domain.usecases.GetUserFromDatabaseUseCase
 import domain.usecases.InsertGmailUserUseCase
 import domain.usecases.InsertUserUseCase
 import domain.worker.EmailVerificationWorker
@@ -61,10 +61,10 @@ class AuthenticationViewModel @Inject constructor(
     @GmailSignUp private val signUp: BeginSignInRequest,
     private val gmailAuthUseCase: GmailAuthUseCase,
     private val insertGmailUserUseCase: InsertGmailUserUseCase,
-    private val getGmailUserUseCase: GetGmailUserUseCase,
-    private val getUserFromDatabaseUseCase: GetUserFromDatabaseUseCase,
     private val sendPasswordResetEmailUseCase: SendPasswordResetEmailUseCase,
-    val workManager: WorkManager
+    val workManager: WorkManager,
+    private val getFirebaseUserDataUseCase: GetFirebaseUserDataUseCase,
+    private val isUserExistUseCase: IsUserExistUseCase
 ) : ViewModel() {
 
     private val _signUpState = MutableStateFlow<SignUpEvent>(SignUpEvent.Loading)
@@ -72,16 +72,12 @@ class AuthenticationViewModel @Inject constructor(
     private val _signInState = MutableStateFlow<SignInEvent>(SignInEvent.Loading)
     val signInState = _signInState.asStateFlow()
     val isEmailVerified get() = getFirebaseUserUseCase.user()?.isEmailVerified ?:false
-    private val firebaseUser = getFirebaseUserUseCase.user()
+
+    private val _gmailAuthState = MutableStateFlow<AuthResult?>(null)
+    val gmailAuthState = _gmailAuthState.asStateFlow()
 
     private val _userNameFlow = MutableSharedFlow<String>()
     val userNameFlow = _userNameFlow.asSharedFlow()
-
-    private val _gmailUserFlow = MutableStateFlow<GmailUserEntity?>(null)
-    val gmailUserFlow = _gmailUserFlow.asStateFlow()
-
-    private val _defaultAuthorizationUserFlow = MutableStateFlow<UserEntity?>(null)
-    val defaultAuthorizationUserFlow = _defaultAuthorizationUserFlow.asStateFlow()
 
     val request = OneTimeWorkRequestBuilder<EmailVerificationWorker>()
         .setInitialDelay(7,TimeUnit.MINUTES)
@@ -129,37 +125,49 @@ class AuthenticationViewModel @Inject constructor(
     }
 
     fun reloadUser(){
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch{
              reloadUserUseCase.reload()
         }
     }
 
-    suspend fun gmailSignIn(): IntentSender? {
+
+
+
+    suspend fun gmailSignIn(): IntentSender{
         val signInResult = oneTapClient.beginSignIn(signIn).await()
         return signInResult.pendingIntent.intentSender
     }
 
-
-    suspend fun gmailSignUp(): IntentSender? {
+    suspend fun gmailSignUp():IntentSender{
         val signUpResult = oneTapClient.beginSignIn(signUp).await()
         return signUpResult.pendingIntent.intentSender
     }
 
-    suspend fun authorizeWithGmail(): GmailAuthorizationData?{
+
+
+     suspend fun authorizeWithGmail(): GmailAuthorizationData{
+         return withContext(Dispatchers.IO){
+             getFirebaseUserDataUseCase.getData()
+         }
+    }
+
+    suspend fun isUserExistOrNot(email: String):Boolean{
         return withContext(Dispatchers.IO){
-            if(firebaseUser != null &&
-                firebaseUser.providerData.any {
-                    it.providerId == GoogleAuthProvider.PROVIDER_ID
-                }
-            ){
-                GmailAuthorizationData(
-                    id = firebaseUser.uid,
-                    name = firebaseUser.displayName ?:"",
-                    pictureUrl = firebaseUser.photoUrl?.toString()
-                )
-            }
-            null
+            isUserExistUseCase.existOrNot(email)
         }
+    }
+
+    suspend fun insertGmailUser(){
+        val data = authorizeWithGmail()
+        insertGmailUserUseCase.insert(
+            GmailUserEntity(
+                id = data.id,
+                name = data.name,
+                photoUrl = data.pictureUrl ?: throw NullPointerException(
+                    "pictureUrl null in viewModel"
+                ),
+            )
+        )
     }
 
     fun signOutWhileUsingEmailPassword(){
@@ -175,7 +183,7 @@ class AuthenticationViewModel @Inject constructor(
     }
 
     fun sendEmailVerification(){
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             sendEmailVerificationLetterUseCase.send()
         }
     }
@@ -186,16 +194,9 @@ class AuthenticationViewModel @Inject constructor(
         }
     }
 
-    fun getDefaultAuthorizationUserFromDB(){
-        viewModelScope.launch(Dispatchers.IO) {
-            _defaultAuthorizationUserFlow.emit(
-                getUserFromDatabaseUseCase.getUserFromDataBase()
-            )
-        }
-    }
 
     fun retrieveUserName(email:String){
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO){
             val value = getUserNameFromFireStoreByEmail.retrieve(email)
             _userNameFlow.emit(
                 value
@@ -204,27 +205,16 @@ class AuthenticationViewModel @Inject constructor(
     }
 
     fun gmailAuth(credential: AuthCredential){
-        viewModelScope.launch(Dispatchers.IO) {
-            gmailAuthUseCase.gmailAuth(credential)
-        }
-    }
-
-    fun insertGmailUser(gmailUserEntity: GmailUserEntity){
-        viewModelScope.launch(Dispatchers.IO) {
-            insertGmailUserUseCase.insert(gmailUserEntity)
-        }
-    }
-
-    fun getGmailUser(){
-        viewModelScope.launch(Dispatchers.IO) {
-            _gmailUserFlow.emit(
-                getGmailUserUseCase.execute()
+        viewModelScope.launch{
+            _gmailAuthState.emit(
+                gmailAuthUseCase.gmailAuth(credential)
             )
         }
     }
 
+
     fun sendResetPasswordEmail(email:String){
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch{
             sendPasswordResetEmailUseCase.send(email)
         }
     }
@@ -248,10 +238,10 @@ class AuthenticationViewModelFactory @Inject constructor(
     @GmailSignUp private val signUp: BeginSignInRequest,
     private val gmailAuthUseCase: GmailAuthUseCase,
     private val insertGmailUserUseCase: InsertGmailUserUseCase,
-    private val getGmailUserUseCase: GetGmailUserUseCase,
-    private val getUserFromDatabaseUseCase: GetUserFromDatabaseUseCase,
     private val sendPasswordResetEmailUseCase: SendPasswordResetEmailUseCase,
-    private val workManager: WorkManager
+    private val workManager: WorkManager,
+    private val getFirebaseUserDataUseCase: GetFirebaseUserDataUseCase,
+    private val isUserExistUseCase: IsUserExistUseCase
 ):ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
          if(modelClass.isAssignableFrom(AuthenticationViewModel::class.java)){
@@ -272,10 +262,10 @@ class AuthenticationViewModelFactory @Inject constructor(
                  signUp,
                  gmailAuthUseCase,
                  insertGmailUserUseCase,
-                 getGmailUserUseCase,
-                 getUserFromDatabaseUseCase,
                  sendPasswordResetEmailUseCase,
-                 workManager
+                 workManager,
+                 getFirebaseUserDataUseCase,
+                 isUserExistUseCase
              ) as T
          }else{
              throw IllegalArgumentException("Unknown ViewModel class")

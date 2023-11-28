@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.nutrition.feature_home"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 21
@@ -34,7 +34,7 @@ android {
     viewBinding.isEnabled = true
 }
 
-val daggerVersion = "2.48"
+
 
 dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
@@ -47,6 +47,15 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     // Dagger
+    val daggerVersion = "2.48"
     compileOnly("com.google.dagger:dagger:$daggerVersion")
     kapt ("com.google.dagger:dagger-compiler:$daggerVersion")
+    
+    implementation(project(":core"))
+    implementation(project(":db"))
+
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
+
 }

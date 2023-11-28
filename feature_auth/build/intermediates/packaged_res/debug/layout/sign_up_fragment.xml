@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/rounded_corner_auth_fragment"
+    style="@style/backgroundColor"
     tools:context="presentation.auth_fragments.SignUpFragment">
 
 
@@ -34,13 +34,13 @@
 
 
     <TextView
+        style="@style/textColors"
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/title_font_splash"
         android:gravity="center"
         android:text="@string/sign_up"
-        android:textColor="@color/customBlack"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,11 +66,10 @@
         app:layout_constraintVertical_bias="0.773" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:maxLines="1"
+        style="@style/textFieldsStyle"
         android:id="@+id/passwordTextField"
         android:layout_width="319dp"
         android:layout_height="65dp"
-        android:background="@drawable/rounded_corner_for_fields"
         android:clipToOutline="true"
         android:drawableStart="@drawable/lock"
         android:drawablePadding="14dp"
@@ -78,10 +77,6 @@
         android:hint="@string/password"
         android:imeOptions="actionDone"
         android:inputType="textVisiblePassword"
-        android:padding="20dp"
-        android:textColor="@color/grey"
-        android:textColorHint="@color/grey"
-        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.527"
@@ -90,44 +85,31 @@
         app:layout_constraintVertical_bias="0.8" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:maxLines="1"
+        android:drawableStart="@drawable/profile"
         android:inputType="text"
-        android:focusable="true"
         android:id="@+id/nameTextField"
         android:layout_width="319dp"
         android:layout_height="65dp"
         android:imeOptions="actionNext"
-        android:background="@drawable/rounded_corner_for_fields"
+        style="@style/textFieldsStyle"
         android:clipToOutline="true"
-        android:drawableStart="@drawable/profile"
-        android:drawablePadding="14dp"
-        android:fontFamily="@font/textfields_font"
         android:hint="@string/name"
-        android:padding="24dp"
-        android:textColor="@color/grey"
-        android:textColorHint="@color/grey"
-        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:maxLines="1"
+        style="@style/textFieldsStyle"
         android:id="@+id/emailTextField"
         android:layout_width="319dp"
         android:layout_height="65dp"
-        android:background="@drawable/rounded_corner_for_fields"
         android:clipToOutline="true"
         android:drawableStart="@drawable/email"
-        android:drawablePadding="14dp"
-        android:fontFamily="@font/textfields_font"
         android:hint="@string/email"
         android:imeOptions="actionNext"
         android:inputType="textEmailAddress"
         android:padding="20dp"
-        android:textColor="@color/grey"
-        android:textColorHint="@color/grey"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

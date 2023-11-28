@@ -5,6 +5,7 @@
     android:id="@+id/auth_navigation"
     app:startDestination="@id/signUpFragment">
 
+
     <fragment
         android:id="@+id/signUpFragment"
         android:name="presentation.auth_fragments.SignUpFragment"
@@ -22,6 +23,12 @@
         <action
             android:id="@+id/action_signUpFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_badInternetFragment"
+            app:destination="@id/badInternetFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_noInternetFragment"
+            app:destination="@id/noInternetFragment" />
 
     </fragment>
     <fragment
@@ -55,6 +62,12 @@
         <action
             android:id="@+id/action_emailVerificationFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_emailVerificationFragment_to_badInternetFragment"
+            app:destination="@id/badInternetFragment" />
+        <action
+            android:id="@+id/action_emailVerificationFragment_to_noInternetFragment"
+            app:destination="@id/noInternetFragment" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -72,6 +85,12 @@
         <action
             android:id="@+id/action_signInFragment_to_forgotPasswordFragment"
             app:destination="@id/forgotPasswordFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_badInternetFragment"
+            app:destination="@id/badInternetFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_noInternetFragment"
+            app:destination="@id/noInternetFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
@@ -81,5 +100,21 @@
         <action
             android:id="@+id/action_forgotPasswordFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_badInternetFragment"
+            app:destination="@id/badInternetFragment" />
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_noInternetFragment"
+            app:destination="@id/noInternetFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/badInternetFragment"
+        android:name="presentation.BadInternetFragment"
+        android:label="fragment_bad_internet"
+        tools:layout="@layout/fragment_bad_internet" />
+    <fragment
+        android:id="@+id/noInternetFragment"
+        android:name="presentation.NoInternetFragment"
+        android:label="fragment_no_internet"
+        tools:layout="@layout/fragment_no_internet" />
 </navigation>

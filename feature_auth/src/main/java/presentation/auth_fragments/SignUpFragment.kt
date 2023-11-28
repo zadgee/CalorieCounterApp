@@ -1,6 +1,7 @@
 package presentation.auth_fragments
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -19,14 +20,16 @@ import androidx.navigation.fragment.findNavController
 import com.nutrition.feature_auth.R
 import com.nutrition.feature_auth.databinding.SignUpFragmentBinding
 import domain.event.SignUpEvent
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import presentation.STATE_LOADING
 import presentation.STATE_SUCCESS
 import presentation.event.ValidationEvent
 import presentation.viewModels.AuthenticationViewModel
 import presentation.viewModels.ValidationViewModel
-import presentation.showToast
+import utils.showToast
 import presentation.viewModels.AuthenticationViewModelFactory
 import javax.inject.Inject
 
@@ -84,6 +87,7 @@ class SignUpFragment : Fragment() {
                     R.drawable.password_visibility_off
                 )
             }
+            passwordEditText?.typeface = Typeface.DEFAULT
             passwordEditText?.setSelection(passwordEditText.text?.length ?: 0)
         }
 
@@ -152,13 +156,15 @@ class SignUpFragment : Fragment() {
                                 }
                                 is SignUpEvent.Success ->{
                                     Log.d(STATE_SUCCESS,"Sign up event")
-                                    sharedPreferences?.edit()?.apply {
-                                        putString("name",name)
-                                        putString("email",email)
-                                        putString("password",password)
-                                    }?.apply()
-                                    delay(5)
-                                    authenticationViewModel.sendEmailVerification()
+                                    withContext(Dispatchers.IO){
+                                        sharedPreferences?.edit()?.apply {
+                                            putString("name",name)
+                                            putString("email",email)
+                                            putString("password",password)
+                                        }?.apply()
+                                        delay(5)
+                                        authenticationViewModel.sendEmailVerification()
+                                    }
                                     delay(10)
                                     findNavController().navigate(
                                         R.id.action_signUpFragment_to_emailVerificationFragment

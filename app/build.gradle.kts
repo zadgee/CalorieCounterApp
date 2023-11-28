@@ -12,7 +12,7 @@ android {
     defaultConfig {
         applicationId = "com.nutrition.caloriecountingapp"
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -45,8 +45,8 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.4")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.4")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
     implementation("com.google.android.gms:play-services-ads-lite:22.5.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -55,11 +55,11 @@ dependencies {
     implementation(project(":feature_auth"))
     implementation(project(":feature_home"))
     implementation(project(":feature_search"))
-    implementation(project(":feature_settings"))
+    implementation(project(":feature_profile"))
     implementation(project(":core"))
     implementation(project(":db"))
 
-    implementation("com.google.gms:google-services:4.3.8")
+    implementation("com.google.gms:google-services:4.4.0")
 
     // Dagger
     implementation("com.google.dagger:dagger:$daggerVersion")

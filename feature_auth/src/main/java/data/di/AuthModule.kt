@@ -39,9 +39,9 @@ class AuthModule(
                 .setServerClientId(WEB_CLIENT_ID)
                 .setFilterByAuthorizedAccounts(true)
                 .build()
-        )
-        .setAutoSelectEnabled(true)
+        ).setAutoSelectEnabled(true)
         .build()
+
 
     @Provides
     @AuthScope
@@ -53,7 +53,7 @@ class AuthModule(
                 .setServerClientId(WEB_CLIENT_ID)
                 .setFilterByAuthorizedAccounts(false)
                 .build()
-        )
+        ).setAutoSelectEnabled(false)
         .build()
 
 

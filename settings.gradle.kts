@@ -17,7 +17,7 @@ rootProject.name = "CalorieCountingApp"
 include(":app")
 include(":feature_home")
 include(":feature_search")
-include(":feature_settings")
 include(":feature_auth")
 include(":core")
 include(":db")
+include(":feature_profile")

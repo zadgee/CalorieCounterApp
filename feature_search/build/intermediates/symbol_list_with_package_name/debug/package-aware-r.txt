@@ -2,3 +2,4 @@ com.nutrition.feature_search
 id search_navigation
 layout fragment_search
 navigation search_navigation
+string search_your_favourite_food

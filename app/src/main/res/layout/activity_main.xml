@@ -11,14 +11,12 @@
         android:layout_width="match_parent"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_height="match_parent"
-        android:id="@+id/fragment_container"
+        android:id="@+id/navHostFragment"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/navigation"
-        tools:layout="@layout/fragment_splash"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

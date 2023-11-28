@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.nutrition.feature_auth"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 21
@@ -55,7 +55,7 @@ dependencies {
 
     // Lifecycle
     val lifecycleVersion = "2.6.2"
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
 
     // Testing
     testImplementation("junit:junit:4.13.2")
@@ -70,19 +70,10 @@ dependencies {
     ksp ("com.google.dagger:dagger-compiler:$daggerVersion")
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:31.5.0"))
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
     implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-auth-ktx:22.1.1")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
-    implementation("com.google.firebase:firebase-firestore-ktx:24.9.1")
-
-    // Glide
-    implementation("com.github.bumptech.glide:glide:4.16.0")
-
-    // Room
-    implementation("androidx.room:room-runtime:2.6.0")
-    ksp("androidx.room:room-compiler:2.6.0")
-    implementation("androidx.room:room-ktx:2.6.0")
+    implementation("com.google.firebase:firebase-firestore-ktx")
 
     // WorkManager
     val workManagerVersion = "2.8.1"

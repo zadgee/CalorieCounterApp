@@ -6,6 +6,13 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="presentation.home_fragment.HomeFragment"
-        android:label="HomeFragment" />
+        android:name="presentation.main_fragment.MainFragment"
+        android:label="HomeFragment" >
+
+        <action
+            android:id="@+id/homeFragment_to_searchNavigation"
+            app:destination="@id/search_navigation"
+            />
+
+    </fragment>
 </navigation>

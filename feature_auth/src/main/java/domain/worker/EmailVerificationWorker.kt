@@ -5,6 +5,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import domain.repository.AuthenticationRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -20,8 +21,9 @@ class EmailVerificationWorker @Inject constructor(
       return withContext(Dispatchers.Default){
           authenticationRepository.reloadUser()
            if(!isEmailVerified){
-              authenticationRepository.deleteUserFromFirebase()
-              authenticationRepository.signOutWhileUsingEmailPassword()
+               authenticationRepository.deleteUserFromFirebase()
+               delay(10)
+               authenticationRepository.signOutWhileUsingEmailPassword()
               Result.failure()
           } else {
               Result.success()

@@ -1,10 +1,11 @@
 package presentation.auth_fragments
 import android.annotation.SuppressLint
+import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -21,7 +22,7 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
@@ -34,15 +35,13 @@ import com.nutrition.feature_auth.R
 import com.nutrition.feature_auth.databinding.FragmentSignInBinding
 import domain.models.UserEntity
 import domain.event.SignInEvent
-import domain.models.GmailUserEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import presentation.STATE_LOADING
-import presentation.USER_AUTHORIZED_AND_VERIFY_EMAIL
 import presentation.USER_AUTHORIZED_WITH_GMAIL
 import presentation.event.ValidationEventWhenSignIn
-import presentation.showToast
+import utils.showToast
 import presentation.viewModels.AuthenticationViewModel
 import presentation.viewModels.AuthenticationViewModelFactory
 import presentation.viewModels.ValidationViewModel
@@ -53,21 +52,25 @@ class SignInFragment : Fragment() {
     private var binding : FragmentSignInBinding? = null
     private val validationViewModel by viewModels<ValidationViewModel>()
     private var sharedPreferences: SharedPreferences?=null
-    private var ad: InterstitialAd? = null
+    private var ad:InterstitialAd? = null
     @Inject
     lateinit var viewModelFactory: AuthenticationViewModelFactory
     private val authenticationViewModel:AuthenticationViewModel by viewModels {
         viewModelFactory
     }
-    private var launcherGmailSignIn: ActivityResultLauncher<IntentSenderRequest>?=null
+    private var launcher:ActivityResultLauncher<IntentSenderRequest>? = null
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        launcherGmailSignIn = registerForActivityResult(
+    override fun onAttach(context: Context) {
+        authComponent(context.applicationContext)
+            .injectSignInFragment(this)
+        activity
+
+        launcher = registerForActivityResult(
             ActivityResultContracts.StartIntentSenderForResult()
-        ){ result->
-            lifecycleScope.launch {
+        ){
+            result->
+            lifecycleScope.launch(Dispatchers.IO){
                 try {
                     if(result.resultCode == RESULT_OK){
                         val credentials = authenticationViewModel.oneTapClient.
@@ -79,40 +82,18 @@ class SignInFragment : Fragment() {
                             googleIdToken,null
                         )
                         authenticationViewModel.gmailAuth(googleCred)
-                        delay(10)
-                        sharedPreferences?.edit()?.apply {
-                            putBoolean(USER_AUTHORIZED_WITH_GMAIL,true)
-                        }?.apply()
-                        delay(10)
-                        val userData = authenticationViewModel.authorizeWithGmail()
-                        if(userData != null){
-                            authenticationViewModel.insertGmailUser(
-                                GmailUserEntity(
-                                    id = userData.id,
-                                    name = userData.name?:"",
-                                    photoUrl = userData.pictureUrl?:throw NullPointerException(
-                                        "Photo url cannot be null"
-                                    )
-                                )
-                            )
-                            delay(20)
-                            loadFullScreenAd()
-                            initStates()
-                         }
+                    }else if(result.resultCode == RESULT_CANCELED){
+                        Log.d("ActivityResultTAG","Result cancelled")
                     }
                 }catch (e:Exception){
                     Log.d("ActivityResultTAG",e.message?:"Unknown error")
                 }
             }
         }
+        super.onAttach(context)
+
     }
 
-    override fun onAttach(context: Context) {
-        authComponent(context.applicationContext)
-            .injectSignInFragment(this)
-        activity
-        super.onAttach(context)
-    }
 
 
 
@@ -121,7 +102,6 @@ class SignInFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activity?.requestedOrientation = SCREEN_ORIENTATION_PORTRAIT
         binding = FragmentSignInBinding.inflate(layoutInflater)
         return binding?.root
     }
@@ -131,6 +111,7 @@ class SignInFragment : Fragment() {
         sharedPreferences = context?.getSharedPreferences(
             "Preferences", Context.MODE_PRIVATE
         )
+
         binding?.forgotPasswordText?.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         binding?.forgotPasswordText?.setOnClickListener {
              lifecycleScope.launch {
@@ -158,6 +139,7 @@ class SignInFragment : Fragment() {
                     R.drawable.password_visibility_off
                 )
             }
+            passwordEditText?.typeface = Typeface.DEFAULT
             passwordEditText?.setSelection(passwordEditText.text?.length ?: 0)
         }
 
@@ -188,19 +170,44 @@ class SignInFragment : Fragment() {
         }
 
         binding?.googleButton?.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.Default) {
-                val signUpAction = authenticationViewModel.gmailSignUp()
-                val signInAction = authenticationViewModel.gmailSignIn()
-                val finalAction = signUpAction ?: signInAction
-                launcherGmailSignIn?.launch(
-                    IntentSenderRequest.Builder(
-                        finalAction?:return@launch
-                    ).build()
-                )
+            lifecycleScope.launch{
+                val authorizedWithGmailData = authenticationViewModel.authorizeWithGmail()
+                val userEmail = authorizedWithGmailData.email
+                val isUserExist = authenticationViewModel.isUserExistOrNot(userEmail)
+                if(!isUserExist){
+                    val gmailSignUp = authenticationViewModel.gmailSignUp()
+                    launcher?.launch(
+                        IntentSenderRequest.Builder(
+                            gmailSignUp
+                        ).build()
+                    )
+                    authenticationViewModel.gmailAuthState.collect{
+                            result->
+                        if(result != null){
+                            authenticationViewModel.insertGmailUser()
+                            initAdCallback(view.context)
+                        }
+                    }
+                } else {
+                     val gmailSignIn = authenticationViewModel.gmailSignIn()
+                     launcher?.launch(
+                         IntentSenderRequest.Builder(
+                             gmailSignIn
+                         ).build()
+                     )
+                    authenticationViewModel.gmailAuthState.collect{
+                        result->
+                        if(result != null){
+                            authenticationViewModel.insertGmailUser()
+                            initAdCallback(view.context)
+                        }
+                    }
+                }
+
+            }
             }
         }
 
-    }
 
     private fun signIn(
         email:String,
@@ -215,126 +222,124 @@ class SignInFragment : Fragment() {
         )
 
         lifecycleScope.launch {
-            repeatOnLifecycle(viewLifecycleOwner.lifecycle.currentState){
-                validationViewModel.fieldsState.collect{result->
-                    if(
-                        result.nameError == null &&
-                        result.emailError == null &&
-                        result.passwordError == null
-                        ){
-                        binding?.emailError?.visibility = INVISIBLE
-                        binding?.passwordError?.visibility = INVISIBLE
-                        authenticationViewModel.signIn(
-                            email = email,
-                            password = password
-                        )
-                        authenticationViewModel.signInState.collect{ event->
-                            when(event){
-                                is SignInEvent.Error -> {
+            validationViewModel.fieldsState.collect{result->
+                if(
+                    result.nameError == null &&
+                    result.emailError == null &&
+                    result.passwordError == null
+                ){
+                    binding?.emailError?.visibility = INVISIBLE
+                    binding?.passwordError?.visibility = INVISIBLE
+                    authenticationViewModel.signIn(
+                        email = email,
+                        password = password
+                    )
+                    authenticationViewModel.signInState.collect{ event->
+                        when(event){
+                            is SignInEvent.Error -> {
+                                showToast(
+                                    message = event.error,
+                                    context = context
+                                )
+                            }
+                            is SignInEvent.Success -> {
+                                val isEmailVerified = authenticationViewModel.isEmailVerified
+                                if(!isEmailVerified){
                                     showToast(
-                                        message = event.error,
+                                        message = "We've sent you an email to verify your account.",
                                         context = context
                                     )
-                                }
-                                is SignInEvent.Success -> {
-                                    val isEmailVerified = authenticationViewModel.isEmailVerified
-                                    if(!isEmailVerified){
-                                        showToast(
-                                            message = "We've sent you an email to verify your account.",
-                                            context = context
-                                        )
-                                        authenticationViewModel.sendEmailVerification()
-                                        delay(50)
-                                        findNavController().navigate(
-                                            R.id.action_signInFragment_to_emailVerificationFragment
-                                        )
-                                    } else {
-                                        authenticationViewModel.retrieveUserName(email)
-                                        delay(10)
-                                        authenticationViewModel.userNameFlow.collect{ name->
-                                            Log.d("TAG_NAME", name)
-                                            authenticationViewModel.insertUser(
-                                                UserEntity(
-                                                    name = name,
-                                                    email = email,
-                                                    password = password
-                                                )
+                                    authenticationViewModel.sendEmailVerification()
+                                    delay(30)
+                                    findNavController().navigate(
+                                        R.id.action_signInFragment_to_emailVerificationFragment
+                                    )
+                                } else {
+                                    authenticationViewModel.retrieveUserName(email)
+                                    delay(10)
+                                    authenticationViewModel.userNameFlow.collect{ name->
+                                        Log.d("TAG_NAME", name)
+                                        authenticationViewModel.insertUser(
+                                            UserEntity(
+                                                name = name,
+                                                email = email,
+                                                password = password
                                             )
-                                            sharedPreferences?.edit()?.apply {
-                                                putBoolean(USER_AUTHORIZED_AND_VERIFY_EMAIL,true)
-                                            }?.apply()
-                                            loadFullScreenAd()
-                                            initStates()
-                                        }
+                                        )
+                                        initAdCallback(context)
+
                                     }
                                 }
+                            }
 
-                                SignInEvent.Loading ->{
-                                    Log.d(STATE_LOADING,"Loading...")
-                                }
+                            SignInEvent.Loading ->{
+                                Log.d(STATE_LOADING,"Loading...")
                             }
                         }
-                    } else {
-                        binding?.emailError?.text = result.emailError
-                        binding?.emailError?.visibility = VISIBLE
-                        binding?.passwordError?.text = result.passwordError
-                        binding?.passwordError?.visibility = VISIBLE
                     }
+                } else {
+                    binding?.emailError?.text = result.emailError
+                    binding?.emailError?.visibility = VISIBLE
+                    binding?.passwordError?.text = result.passwordError
+                    binding?.passwordError?.visibility = VISIBLE
                 }
             }
         }
     }
 
-    private  fun loadFullScreenAd(){
+
+    private fun initAdCallback(
+        localContext: Context
+    ):Unit?{
         val adRequest = AdRequest.Builder().build()
-        InterstitialAd.load(requireContext(),"ca-app-pub-9481709154583117/5969237894"
-            ,adRequest,
+        InterstitialAd.load(
+            localContext,"ca-app-pub-9481709154583117/5969237894",adRequest,
             object : InterstitialAdLoadCallback(){
-                override fun onAdLoaded(p0: InterstitialAd) {
-                    ad = p0
-                }
-
                 override fun onAdFailedToLoad(p0: LoadAdError) {
+                    super.onAdFailedToLoad(p0)
                     ad = null
-                    Log.d("AdError","ad failed to load: ${p0.message}")
+                    Log.d("AdError","onAdFailedToLoad : ${p0.message}")
                 }
-            })
-    }
 
-    private suspend fun initStates(){
-        if(ad != null){
+                override fun onAdLoaded(p0: InterstitialAd) {
+                    super.onAdLoaded(p0)
+                    ad = p0
+                    Log.d("OnAddLoaded","$p0")
+                }
+            }
+        )
             ad?.fullScreenContentCallback =
                 object : FullScreenContentCallback(){
                     override fun onAdFailedToShowFullScreenContent(
                         p0: AdError
                     ) {
-                        super.onAdFailedToShowFullScreenContent(
-                            p0
-                        )
+                        super.onAdFailedToShowFullScreenContent(p0)
                         ad = null
-                        loadFullScreenAd()
+                       Log.d("AdError","OnAdFailedToShowFullScreenContent:${p0.message}")
                     }
 
                     override fun onAdDismissedFullScreenContent() {
                         super.onAdDismissedFullScreenContent()
+                        sharedPreferences?.edit()?.apply {
+                            putBoolean(USER_AUTHORIZED_WITH_GMAIL,true)
+                        }?.apply()
+                        val navOptions = NavOptions.Builder()
+                            .setPopUpTo(R.id.signInFragment,true)
+                            .build()
                         findNavController().navigate(
-                            R.id.action_signInFragment_to_homeFragment
+                            R.id.action_signInFragment_to_homeFragment, null, navOptions
                         )
                     }
                 }
-            ad?.show(requireActivity())
-        } else {
-            findNavController().navigate(
-                R.id.action_signInFragment_to_homeFragment
-            )
-        }
+            return ad?.show(requireActivity())
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
         sharedPreferences = null
         binding = null
-        launcherGmailSignIn = null
+        launcher = null
     }
 
 }

@@ -2,6 +2,7 @@ package data.remoteDataSource.repository
 import android.util.Log
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -52,7 +53,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun gmailAuth(credential: AuthCredential) {
+    override suspend fun gmailAuth(credential: AuthCredential):AuthResult?{
         val result = firebaseAuth.signInWithCredential(credential).await()
         val email = result?.user?.email
         val isNewUser = result.additionalUserInfo?.isNewUser ?: false
@@ -62,7 +63,8 @@ class AuthenticationRepositoryImpl @Inject constructor(
                 val user = GmailAuthorizationData(
                     id = uid,
                     name = displayName,
-                    pictureUrl = photoUrl?.toString()
+                    pictureUrl = photoUrl?.toString(),
+                    email = email
                 )
                 val userRef = db.collection("authorized_users_with_gmail")
                 userRef.document().set(user).addOnFailureListener {
@@ -70,6 +72,7 @@ class AuthenticationRepositoryImpl @Inject constructor(
                 }.await()
             }
         }
+        return result
     }
 
     override suspend fun sendPasswordResetEmail(email: String) {
@@ -80,6 +83,24 @@ class AuthenticationRepositoryImpl @Inject constructor(
                 Log.d("ResetEmail","Failure:$it")
             }
             .await()
+    }
+
+    override suspend fun getFirebaseUserData():GmailAuthorizationData{
+        return GmailAuthorizationData(
+            id = user?.uid ?:"",
+            name = user?.displayName,
+            pictureUrl = user?.photoUrl?.toString(),
+            email = user?.email ?: throw NullPointerException("email cannot be null")
+        )
+    }
+
+    override suspend fun isUserExist(email: String): Boolean {
+        return try {
+            val result = firebaseAuth.fetchSignInMethodsForEmail(email).await()
+            result?.signInMethods?.isNotEmpty() == true
+        }catch (e:Exception){
+            false
+        }
     }
 
     override suspend fun signUp(email: String, password: String): SignUpEvent {

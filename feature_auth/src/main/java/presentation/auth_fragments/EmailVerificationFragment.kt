@@ -2,13 +2,13 @@ package presentation.auth_fragments
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.pm.ActivityInfo
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,17 +16,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
 import com.nutrition.feature_auth.R
 import com.nutrition.feature_auth.databinding.FragmentEmailVerificationBinding
 import dagger.Lazy
 import domain.models.UserEntity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import presentation.USER_AUTHORIZED_AND_VERIFY_EMAIL
 import presentation.viewModels.AuthenticationViewModel
-import presentation.showToast
-import presentation.showToastLong
+import utils.showToast
+import utils.showToastLong
 import presentation.viewModels.AuthenticationViewModelFactory
 import javax.inject.Inject
 
@@ -38,6 +39,7 @@ class EmailVerificationFragment : Fragment() {
     private val authenticationViewModel:AuthenticationViewModel by viewModels {
         viewModelFactory.get()
     }
+
     private var workManager:WorkManager? = null
 
 
@@ -54,9 +56,9 @@ class EmailVerificationFragment : Fragment() {
         super.onCreate(savedInstanceState)
         val adRequest = AdRequest.Builder().build()
         binding?.adView?.loadAd(adRequest)
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -67,10 +69,17 @@ class EmailVerificationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val adRequest = AdRequest.Builder().build()
+        binding?.adView?.loadAd(adRequest)
+        binding?.adView?.visibility = VISIBLE
         sharedPreferences = context?.getSharedPreferences(
             "Preferences",
             Context.MODE_PRIVATE
         )
+
+
+
+
         val request = authenticationViewModel.request
         workManager?.enqueue(request)
         workManager?.getWorkInfoByIdLiveData(request.id)?.observe(viewLifecycleOwner){ info->
@@ -90,7 +99,8 @@ class EmailVerificationFragment : Fragment() {
                     lifecycleScope.launch {
                         showToastLong(
                             context = view.context,
-                            message = "You do not verify email for a long time period"
+                            message = "You do not verify email for a long time period," +
+                                    " please sign in"
                         )
                         findNavController().navigate(
                             R.id.action_emailVerificationFragment_to_signUpFragment
@@ -116,49 +126,56 @@ class EmailVerificationFragment : Fragment() {
             )
         }
         binding?.verifyEmailButton?.setOnClickListener {
-            authenticationViewModel.reloadUser()
-            val isEmailVerified = authenticationViewModel.isEmailVerified
-            if(!isEmailVerified){
-                showToast(
-                    message = "Please, make sure, that your email is verified",
-                    context = view.context
-                )
-            } else {
-                lifecycleScope.launch {
-                    userVerifyEmailAction()
-                }
-            }
+           lifecycleScope.launch(Dispatchers.IO) {
+               authenticationViewModel.reloadUser()
+               delay(15)
+               val isEmailVerified = authenticationViewModel.isEmailVerified
+               if(!isEmailVerified){
+                   showToast(
+                       message = "Please, make sure, that your email is verified",
+                       context = view.context
+                   )
+               } else {
+                   lifecycleScope.launch {
+                       userVerifyEmailAction()
+                   }
+               }
+           }
         }
     }
 
     private suspend fun userVerifyEmailAction(){
-        val name = sharedPreferences?.getString("name","") ?:""
-        val email = sharedPreferences?.getString("email","") ?:""
-        val password = sharedPreferences?.getString("password","") ?:""
-        authenticationViewModel.addUserToFireStore(
-            name = name,
-            email = email,
-            password = password
-        )
-        delay(10)
-        authenticationViewModel.insertUser(
-            UserEntity(
+        withContext(Dispatchers.IO){
+            val name = sharedPreferences?.getString("name","") ?:""
+            val email = sharedPreferences?.getString("email","") ?:""
+            val password = sharedPreferences?.getString("password","") ?:""
+            authenticationViewModel.addUserToFireStore(
                 name = name,
                 email = email,
                 password = password
             )
-        )
+            delay(10)
+            authenticationViewModel.insertUser(
+                UserEntity(
+                    name = name,
+                    email = email,
+                    password = password
+                )
+            )
+            delay(10)
+            sharedPreferences?.edit()?.apply {
+                putString("name",null)
+                putString("email",null)
+                putString("password",null)
+                putBoolean(USER_AUTHORIZED_AND_VERIFY_EMAIL,true)
+            }?.apply()
+        }
         delay(10)
-        sharedPreferences?.edit()?.apply {
-            putString("name",null)
-            putString("email",null)
-            putString("password",null)
-            putBoolean(USER_AUTHORIZED_AND_VERIFY_EMAIL,true)
-        }?.apply()
-        delay(10)
-        findNavController().navigate(
-            R.id.action_emailVerificationFragment_to_congratsFragment
-        )
+        withContext(Dispatchers.Main){
+           findNavController().navigate(
+               R.id.action_emailVerificationFragment_to_congratsFragment
+           )
+       }
     }
 
     override fun onResume() {

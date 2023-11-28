@@ -8,9 +8,11 @@ import data.annotations.GmailSignIn
 import data.annotations.GmailSignUp
 import domain.usecase.AddUserToFireStoreUseCase
 import domain.usecase.DeleteUserFromFirebaseUseCase
+import domain.usecase.GetFirebaseUserDataUseCase
 import domain.usecase.GetUserNameFromFireStoreByEmail
 import domain.usecase.GetFirebaseUserUseCase
 import domain.usecase.GmailAuthUseCase
+import domain.usecase.IsUserExistUseCase
 import domain.usecase.LoginUseCase
 import domain.usecase.ReloadUserUseCase
 import domain.usecase.SendEmailVerificationLetterUseCase
@@ -45,10 +47,10 @@ class PresentationModule {
         @GmailSignUp signUp: BeginSignInRequest,
         gmailAuthUseCase: GmailAuthUseCase,
         insertGmailUserUseCase: InsertGmailUserUseCase,
-        getGmailUserUseCase: GetGmailUserUseCase,
-        getUserFromDatabaseUseCase: GetUserFromDatabaseUseCase,
         sendPasswordResetEmailUseCase: SendPasswordResetEmailUseCase,
-        workManager: WorkManager
+        workManager: WorkManager,
+        getFirebaseUserDataUseCase: GetFirebaseUserDataUseCase,
+        isUserExistUseCase: IsUserExistUseCase
     ):AuthenticationViewModelFactory{
        return AuthenticationViewModelFactory(
            addUserToFireStoreUseCase,
@@ -67,10 +69,10 @@ class PresentationModule {
            signUp,
            gmailAuthUseCase,
            insertGmailUserUseCase,
-           getGmailUserUseCase,
-           getUserFromDatabaseUseCase,
            sendPasswordResetEmailUseCase,
-           workManager
+           workManager,
+           getFirebaseUserDataUseCase,
+           isUserExistUseCase
        )
     }
 }

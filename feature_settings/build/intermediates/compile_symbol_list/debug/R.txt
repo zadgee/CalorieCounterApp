@@ -1,3 +1,0 @@
-int id settings_navigation 0x0
-int layout settings_fragment 0x0
-int navigation settings_navigation 0x0

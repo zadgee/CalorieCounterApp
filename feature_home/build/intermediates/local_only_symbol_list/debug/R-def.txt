@@ -1,8 +1,9 @@
 R_DEF: Internal format may change without notice
 local
 color black
-drawable rounded_corner_for_screens
+id bottomNavigationBar
 id homeFragment
 id home_navigation
+id imageView
 layout home_fragment
 navigation home_navigation

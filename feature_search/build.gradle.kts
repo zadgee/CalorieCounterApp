@@ -2,11 +2,12 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("kotlinx-serialization")
 }
 
 android {
     namespace = "com.nutrition.feature_search"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 21
@@ -37,7 +38,6 @@ android {
 
 
 dependencies {
-    val daggerVersion = "2.48"
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
     implementation("androidx.core:core-ktx:1.9.0")
@@ -48,6 +48,10 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     // Dagger
+    val daggerVersion = "2.48"
     compileOnly("com.google.dagger:dagger:$daggerVersion")
     kapt("com.google.dagger:dagger-compiler:$daggerVersion")
+
+    implementation(project(":core"))
+
 }

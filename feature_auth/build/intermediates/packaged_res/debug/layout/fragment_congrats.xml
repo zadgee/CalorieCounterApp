@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/rounded_corner_auth_fragment"
+    style="@style/backgroundColor"
     tools:context="presentation.auth_fragments.CongratsFragment">
 
 
@@ -45,12 +45,12 @@
         app:layout_constraintTop_toBottomOf="@+id/effects" />
 
     <TextView
+        style="@style/textColors"
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/title_font_splash"
         android:text="@string/your_profile_is_ready_to_use"
-        android:textColor="@color/customBlack"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
