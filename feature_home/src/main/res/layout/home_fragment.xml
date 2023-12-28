@@ -1,13 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/rounded_corner_for_screens">
+    tools:context="homeFragment.HomeFragment"
+    style="@style/backgroundColor">
 
-    <TextView
-        android:textColor="@color/black"
-        android:text="TestText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
-</LinearLayout>
+
+</FrameLayout>

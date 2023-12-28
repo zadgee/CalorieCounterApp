@@ -8,12 +8,12 @@ import androidx.room.PrimaryKey
     tableName = "user",
 )
 data class UserEntity(
-    @ColumnInfo("name")
+    @ColumnInfo(name = "name")
     val name:String,
     @PrimaryKey(autoGenerate = false)
     val email:String,
-    @ColumnInfo("password")
+    @ColumnInfo(name = "password")
     val password:String,
-    @ColumnInfo("authorized_to_system_time")
+    @ColumnInfo(name = "authorized_to_system_time")
     val whenAuthorized:Long = System.currentTimeMillis(),
 )

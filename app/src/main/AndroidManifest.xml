@@ -13,11 +13,13 @@
         android:label="@string/appName"
         android:roundIcon="@drawable/app_logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CalorieCountingApp"
+        android:theme="@style/Base.V21.Theme.CalorieCountingApp"
         tools:targetApi="31">
         <activity
+            android:screenOrientation="portrait"
             android:name="application.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -27,5 +29,9 @@
          android:name ="com.google.android.gms.ads.APPLICATION_ID"
          android:value ="ca-app-pub-9481709154583117~5807292655"
             />
+        <provider
+            android:authorities="${applicationId}.androidx-startup"
+            android:name="androidx.startup.InitializationProvider"
+            tools:node="remove"/>
     </application>
 </manifest>

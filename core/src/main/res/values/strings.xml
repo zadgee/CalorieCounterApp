@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="send_email_text">Check your email, we\'ve send you an email</string>
+    <string name="next">Next</string>
+    <string name="congrats">Congrats!</string>
+    <string name="or_continue_with">Or Continue With</string>
+    <string name="forgot_your_password">Forgot Your Password?</string>
+    <string name="login_to_your_account">Login To Your Account</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="create_account">Create Account</string>
+    <string name="name">Name</string>
+    <string name="already_have_an_account">already have an account?</string>
+    <string name="google">Google</string>
+    <string name="login">Login</string>
+    <string name="go_home">Go Home</string>
+    <string name="your_profile_is_ready_to_use">Your profile Is Ready To Use</string>
+    <string name="send_another_letter">Send another letter</string>
+    <string name="slow_internet_connectivity">Slow internet connectivity</string>
+    <string name="no_internet_connectivity">No Internet Connectivity</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="search">Search</string>
+</resources>

@@ -1,6 +1,1 @@
-int color black 0x0
-int drawable rounded_corner_for_screens 0x0
-int id homeFragment 0x0
-int id home_navigation 0x0
 int layout home_fragment 0x0
-int navigation home_navigation 0x0

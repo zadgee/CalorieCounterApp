@@ -1,5 +1,4 @@
 package domain.usecases
-
 import domain.models.GmailUserEntity
 import domain.repository.UserDataSource
 import javax.inject.Inject

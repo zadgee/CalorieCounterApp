@@ -4,7 +4,7 @@ package com.nutrition.feature_home.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
@@ -14,15 +14,15 @@ import java.lang.Override;
 
 public final class HomeFragmentBinding implements ViewBinding {
   @NonNull
-  private final LinearLayout rootView;
+  private final FrameLayout rootView;
 
-  private HomeFragmentBinding(@NonNull LinearLayout rootView) {
+  private HomeFragmentBinding(@NonNull FrameLayout rootView) {
     this.rootView = rootView;
   }
 
   @Override
   @NonNull
-  public LinearLayout getRoot() {
+  public FrameLayout getRoot() {
     return rootView;
   }
 
@@ -47,6 +47,6 @@ public final class HomeFragmentBinding implements ViewBinding {
       throw new NullPointerException("rootView");
     }
 
-    return new HomeFragmentBinding((LinearLayout) rootView);
+    return new HomeFragmentBinding((FrameLayout) rootView);
   }
 }

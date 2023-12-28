@@ -1,8 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.gms.google-services")
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -11,8 +11,8 @@ android {
 
     defaultConfig {
         applicationId = "com.nutrition.caloriecountingapp"
-        minSdk = 21
-        targetSdk = 33
+        minSdk = 26
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -28,40 +28,33 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     viewBinding.isEnabled = true
 
-
+    packaging{
+        resources{
+            pickFirsts.add("google/protobuf/*.proto")
+            pickFirsts.add("google/protobuf/compiler/*.proto")
+            pickFirsts.add("META-INF/AL2.0")
+            pickFirsts.add("META-INF/LGPL2.1")
+        }
+    }
 }
 
-val daggerVersion = "2.48"
 dependencies {
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.10.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.4")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.4")
-    implementation("com.google.android.gms:play-services-ads-lite:22.5.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-
-    implementation(project(":feature_auth"))
-    implementation(project(":feature_home"))
-    implementation(project(":feature_search"))
-    implementation(project(":feature_settings"))
-    implementation(project(":core"))
-    implementation(project(":db"))
-
-    implementation("com.google.gms:google-services:4.3.8")
-
-    // Dagger
-    implementation("com.google.dagger:dagger:$daggerVersion")
-    ksp ("com.google.dagger:dagger-compiler:$daggerVersion")
+    appModule()
+    featureAuth()
+    featureHome()
+    featureSearch()
+    featureProfile()
+    core()
+    validation()
+    db()
+    dagger()
+    firebaseModule()
 }

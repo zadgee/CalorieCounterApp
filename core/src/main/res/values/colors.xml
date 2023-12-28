@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#0D0D0D</color>
+    <color name="customBlack">#09051C</color>
+    <color name="grey">#3B3B3B</color>
+    <color name="red">#FF0000</color>
+    <color name="textFieldWhite">#F4F4F4</color>
+    <color name="linear">#53E88B</color>
+    <color name="orange">#DA6317</color>
+    <color name="textFieldColorForDarkTheme">#252525</color>
+    <color name="textColorForTextFieldLightTheme">#C4C4C4</color>
+    <color name="colorForActiveFragmentInNavigationBar">#EBFBF3</color>
+    <color name="search_color_light_theme">#F9A84D</color>
+</resources>
