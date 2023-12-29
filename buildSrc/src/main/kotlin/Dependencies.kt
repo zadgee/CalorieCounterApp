@@ -69,6 +69,7 @@ object Dependencies {
     const val sign_in=":feature_auth:sign_in"
     const val sign_up=":feature_auth:sign_up"
     const val feature_home=":feature_home"
+    const val home=":feature_home:home"
     const val feature_profile=":feature_profile"
     const val feature_search=":feature_search"
     const val dbModule=":db"
@@ -181,6 +182,7 @@ fun DependencyHandler.featureAuth(){
 
 fun DependencyHandler.featureHome(){
     implementation(project(Dependencies.feature_home))
+    implementation(project(Dependencies.home))
 }
 
 fun DependencyHandler.featureSearch(){

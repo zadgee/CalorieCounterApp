@@ -33,7 +33,7 @@ class FragmentCongrats : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (context as CongratsComponentProvider).inject(this)
+        (context.applicationContext as CongratsComponentProvider).inject(this)
     }
 
     override fun onCreateView(

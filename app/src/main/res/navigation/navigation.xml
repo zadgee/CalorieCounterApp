@@ -70,7 +70,7 @@
         android:id="@+id/homeFragment"
         android:name="homeFragment.HomeFragment"
         android:label="home_fragment"
-        tools:layout="@layout/home_fragment">
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
             app:destination="@id/searchFragment" />
@@ -80,7 +80,7 @@
         android:id="@+id/fragmentCongrats"
         android:name="presentation.fragment.FragmentCongrats"
         android:label="fragment_congrats"
-        tools:layout="@layout/fragment_congrats" >
+        tools:layout="@layout/fragment_congrats">
         <action
             android:id="@+id/action_fragmentCongrats_to_homeFragment"
             app:destination="@id/homeFragment" />

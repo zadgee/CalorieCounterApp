@@ -1,0 +1,165 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/backgroundColor"
+    tools:context="presentation.auth_fragments.SignInFragment">
+
+    <ImageView
+        android:id="@+id/backgroundEffects"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/background_screens_effect"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/login_to_your_account_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="@font/title_font_splash"
+        android:text="@string/login_to_your_account"
+        style="@style/textColors"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="@+id/backgroundEffects"
+        app:layout_constraintEnd_toEndOf="@+id/backgroundEffects"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="@+id/backgroundEffects"
+        app:layout_constraintTop_toTopOf="@+id/backgroundEffects"
+        app:layout_constraintVertical_bias="0.908" />
+
+    <ImageView
+        android:id="@+id/app_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/app_logo"
+        app:layout_constraintBottom_toTopOf="@+id/login_to_your_account_txt"
+        app:layout_constraintEnd_toEndOf="@+id/backgroundEffects"
+        app:layout_constraintStart_toStartOf="@+id/backgroundEffects"
+        app:layout_constraintTop_toTopOf="@+id/backgroundEffects" />
+
+
+    <com.google.android.material.textfield.TextInputEditText
+        style="@style/textFieldsStyle"
+        android:id="@+id/emailTextField"
+        android:layout_width="319dp"
+        android:layout_height="65dp"
+        android:clipToOutline="true"
+        android:drawableStart="@drawable/email"
+        android:hint="@string/email"
+        android:imeOptions="actionNext"
+        android:inputType="textEmailAddress"
+        android:padding="20dp"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/emailError"
+        android:layout_width="201dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/textfields_font"
+        android:textColor="@color/red"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.197"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailTextField" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        style="@style/textFieldsStyle"
+        android:id="@+id/passwordTextField"
+        android:layout_width="319dp"
+        android:layout_height="65dp"
+        android:clipToOutline="true"
+        android:drawableStart="@drawable/lock"
+        android:hint="@string/password"
+        android:imeOptions="actionDone"
+        android:inputType="textVisiblePassword"
+        android:padding="20dp"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.655" />
+
+    <TextView
+        android:id="@+id/passwordError"
+        android:layout_width="199dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/textfields_font"
+        android:textColor="@color/red"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.19"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordTextField" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/loginToYourAccount"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/button_shape"
+        android:fontFamily="@font/title_font_splash"
+        android:gravity="center"
+        android:text="@string/login"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/forgotPasswordText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:fontFamily="@font/title_font_splash"
+        android:text="@string/forgot_your_password"
+        android:textColor="@color/linear"
+        app:layout_constraintBottom_toTopOf="@+id/loginToYourAccount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/googleButtonStyle"
+        android:id="@+id/googleButton"
+        android:layout_width="175dp"
+        android:layout_height="65dp"
+        android:text="@string/google"
+        app:layout_constraintBottom_toTopOf="@+id/forgotPasswordText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordTextField"
+        app:layout_constraintVertical_bias="0.786" />
+
+
+    <ImageView
+        android:id="@+id/hideOrShowPasswordButton"
+        android:layout_width="31dp"
+        android:layout_height="27dp"
+        android:src="@drawable/show_password"
+        app:layout_constraintBottom_toBottomOf="@+id/passwordTextField"
+        app:layout_constraintEnd_toEndOf="@+id/passwordTextField"
+        app:layout_constraintHorizontal_bias="0.927"
+        app:layout_constraintStart_toStartOf="@+id/passwordTextField"
+        app:layout_constraintTop_toTopOf="@+id/passwordTextField"
+        app:layout_constraintVertical_bias="0.552" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,2 +1,3 @@
 com.nutrition.feature_search
 layout fragment_search
+string search_your_favourite_food

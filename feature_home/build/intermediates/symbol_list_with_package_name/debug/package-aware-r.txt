@@ -1,2 +1,0 @@
-com.nutrition.feature_home
-layout home_fragment
