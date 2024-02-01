@@ -5,9 +5,9 @@ import javax.inject.Inject
 
 class SignUpRouterImpl @Inject constructor(
     private val sendEmailVerificationLetterUseCase:SendEmailVerificationLetterUseCase
-): SignUpRouter {
+):SignUpRouter {
 
-    override suspend fun sendEmailVerification() {
-      return sendEmailVerificationLetterUseCase.send()
+    override suspend fun sendEmailVerification(){
+       return sendEmailVerificationLetterUseCase.send()
     }
 }

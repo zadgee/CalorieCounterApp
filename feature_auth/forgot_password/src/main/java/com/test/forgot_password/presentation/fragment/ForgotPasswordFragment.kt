@@ -47,9 +47,8 @@ private val viewModel by viewModels<ForgotPasswordViewModel> {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (context.applicationContext as ForgotPasswordComponentProvider).provideViewModelFactory(
-            this
-        )
+        (context.applicationContext as ForgotPasswordComponentProvider)
+            .provideViewModelFactory(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

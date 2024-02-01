@@ -21,8 +21,8 @@ class EmailVerificationRepositoryImpl @Inject constructor(
         return getFirebaseUserUseCase.isEmailVerified()
     }
 
-    override suspend fun sendEmailVerificationLetter() {
-        return sendEmailVerificationLetterUseCase.send()
+    override suspend fun sendEmailVerificationLetter(){
+         return sendEmailVerificationLetterUseCase.send()
     }
 
     override suspend fun deleteUserFromFirebase() {
@@ -39,9 +39,9 @@ class EmailVerificationRepositoryImpl @Inject constructor(
 
     override suspend fun addUserToFireStore(name: String, email: String, password: String) {
         return addUserToFireStoreUseCase.add(
-            name,
-            email,
-            password
+            name = name,
+            email = email,
+            password = password
         )
     }
 

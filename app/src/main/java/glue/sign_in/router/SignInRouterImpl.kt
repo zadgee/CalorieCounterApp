@@ -17,13 +17,13 @@ import domain.usecases.SendEmailVerificationLetterUseCase
 import javax.inject.Inject
 
 class SignInRouterImpl @Inject constructor(
-    private val sendEmailVerificationLetterUseCase: SendEmailVerificationLetterUseCase,
+    private val sendEmailVerificationLetterUseCase:SendEmailVerificationLetterUseCase,
     private val insertUserUseCase:InsertUserUseCase,
-    val getUserNameFromFireStoreByEmail: GetUserNameFromFireStoreByEmail,
-    private val gmailSignInUseCase: GmailSignInUseCase,
-    private val gmailSignUpUseCase: GmailSignUpUseCase,
-    private val gmailAuthUseCase: GmailAuthUseCase,
-    private val getFirebaseUserDataUseCase: GetFirebaseUserDataUseCase,
+    private val getUserNameFromFireStoreByEmail:GetUserNameFromFireStoreByEmail,
+    private val gmailSignInUseCase:GmailSignInUseCase,
+    private val gmailSignUpUseCase:GmailSignUpUseCase,
+    private val gmailAuthUseCase:GmailAuthUseCase,
+    private val getFirebaseUserDataUseCase:GetFirebaseUserDataUseCase,
     private val insertGmailUserUseCase:InsertGmailUserUseCase
 ): SignInRouter {
 
@@ -35,8 +35,8 @@ class SignInRouterImpl @Inject constructor(
         return gmailSignInUseCase.gmailSignIn()
     }
 
-    override suspend fun sendEmailVerification() {
-       return sendEmailVerificationLetterUseCase.send()
+    override suspend fun sendEmailVerification(){
+        return sendEmailVerificationLetterUseCase.send()
     }
 
     override suspend fun getUserNameFromFireStore(email: String): String {
@@ -67,7 +67,5 @@ class SignInRouterImpl @Inject constructor(
     override suspend fun initGmailAuth(activityResult: ActivityResult) {
         return gmailAuthUseCase.gmailAuth(activityResult)
     }
-
-
 
 }

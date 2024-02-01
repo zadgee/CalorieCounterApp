@@ -11,7 +11,7 @@ class SignInRepositoryImpl @Inject constructor(
 ) : SignInRepository {
 
 
-    override suspend fun signIn(email: String, password: String): EventSignIn {
+    override suspend fun signIn(email: String, password: String):EventSignIn {
         return signInUseCase.login(email, password).toEventSignIn()
     }
 

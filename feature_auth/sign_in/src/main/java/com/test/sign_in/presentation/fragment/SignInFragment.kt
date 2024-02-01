@@ -77,7 +77,8 @@ class SignInFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (context.applicationContext as SignInComponentProvider).provideViewModelFactory(this)
+        (context.applicationContext as SignInComponentProvider)
+            .provideViewModelFactory(this)
     }
 
     private fun loadFullScreenAd() {
@@ -240,6 +241,7 @@ class SignInFragment : Fragment() {
                                    )
                                }
                                is EventSignIn.Loading ->{
+                                   binding?.progressBarSignIn?.visibility = VISIBLE
                                    Log.d("SignInLoading","Loading...")
                                }
                                is EventSignIn.Success ->{
@@ -249,10 +251,10 @@ class SignInFragment : Fragment() {
                                           message = "We've sent you an email to verify your account.",
                                           context = context
                                       )
-                                      delay(40)
                                       viewModel.sendEmailVerificationLetter()
-                                      delay(10)
-                                      val actionId = viewModel.navigateSignInToEmailVerification()
+                                      delay(40)
+                                      val actionId = viewModel
+                                          .navigateSignInToEmailVerification()
                                       findNavController().navigate(actionId)
                                   } else {
                                       val name = viewModel.getUserNameFromFireStore(

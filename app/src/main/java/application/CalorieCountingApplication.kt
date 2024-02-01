@@ -14,6 +14,7 @@ import com.test.sign_up.presentation.fragment.SignUpFragment
 import app.RoomModule
 import application.di.DaggerApplicationComponent
 import application.di.UseCasesModule
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import componentProvider.CongratsComponentProvider
 import domain.di.DaggerAuthComponent
 import domain.di.AuthModule
@@ -122,6 +123,8 @@ class CalorieCountingApplication:Application(), SignUpComponentProvider, SignInC
         WorkManager.initialize(
             this, Configuration.Builder().build()
         )
+        FirebaseCrashlytics
+            .getInstance()
+            .setCrashlyticsCollectionEnabled(true)
     }
-
 }

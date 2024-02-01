@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -26,7 +27,6 @@ import presentation.showToastLong
 import javax.inject.Inject
 
 private const val WORK_MANAGER = "WorkManagerTAG"
-private const val USER_AUTHORIZED_AND_VERIFY_EMAIL = "USER_AUTHORIZED_AND_VERIFY_EMAIL"
 
 class EmailVerificationFragment : Fragment() {
     private var binding:FragmentEmailVerificationBinding?=null
@@ -53,8 +53,8 @@ class EmailVerificationFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (context.applicationContext as EmailVerificationComponentProvider
-                ).provideViewModelFactory(this)
+        (context.applicationContext as EmailVerificationComponentProvider)
+            .provideViewModelFactory(this)
     }
 
 
@@ -110,10 +110,6 @@ class EmailVerificationFragment : Fragment() {
         binding?.sendEmailVerificationLetterRetry?.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         binding?.sendEmailVerificationLetterRetry?.setOnClickListener {
             viewModel.sendEmailVerificationLetter()
-            showToast(
-                message = "Another email sent",
-                context = view.context
-            )
         }
 
         binding?.verifyEmailButton?.setOnClickListener {
@@ -135,6 +131,7 @@ class EmailVerificationFragment : Fragment() {
     }
 
     private suspend fun userVerifyEmailAction() {
+        binding?.progressBar?.visibility = VISIBLE
         val name = sharedPreferences?.getString("name","")
         val email = sharedPreferences?.getString("email","")
         val password = sharedPreferences?.getString("password","")
@@ -153,13 +150,6 @@ class EmailVerificationFragment : Fragment() {
             password = password
         )
         delay(10)
-        sharedPreferences?.edit()?.apply {
-            putString("name",null)
-            putString("email",null)
-            putString("password",null)
-            putBoolean(USER_AUTHORIZED_AND_VERIFY_EMAIL,true)
-        }?.apply()
-        delay(10)
         val actionId = viewModel.navigateToCongrats()
         findNavController().navigate(actionId)
     }
@@ -168,6 +158,11 @@ class EmailVerificationFragment : Fragment() {
         super.onDestroyView()
         binding = null
         workManager = null
+        sharedPreferences?.edit()?.apply {
+            putString("name",null)
+            putString("email",null)
+            putString("password",null)
+        }?.apply()
     }
 
     override fun onResume() {

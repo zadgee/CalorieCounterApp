@@ -4,10 +4,9 @@ import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.Firebase
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions.DEFAULT_SIGN_IN
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
 import dagger.Module
 import dagger.Provides
 import data.AuthenticationRepositoryImpl
@@ -59,7 +58,7 @@ class AuthModule(
     @Provides
     @AuthScope
     fun provideSignInOptions():GoogleSignInOptions {
-        return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        return GoogleSignInOptions.Builder(DEFAULT_SIGN_IN)
             .requestIdToken(WEB_CLIENT_ID)
             .requestEmail()
             .requestProfile()
@@ -68,10 +67,9 @@ class AuthModule(
 
     @Provides
     @AuthScope
-    fun provideFirebaseStore():FirebaseFirestore {
-        return Firebase.firestore
+    fun provideUserFireStoreCollection():FirebaseFirestore {
+        return FirebaseFirestore.getInstance()
     }
-
 
     @Provides
     @AuthScope
@@ -84,16 +82,16 @@ class AuthModule(
     fun provideAuthenticationRepository(
         firebaseAuth: FirebaseAuth,
         oneTapClient: SignInClient,
-        db: FirebaseFirestore,
         @GmailSignIn gmailSignIn: BeginSignInRequest,
-        @GmailSignUp gmailSignUp: BeginSignInRequest
+        @GmailSignUp gmailSignUp: BeginSignInRequest,
+        firebaseFireStore:FirebaseFirestore
     ): AuthenticationRepository {
         return AuthenticationRepositoryImpl(
             firebaseAuth = firebaseAuth,
             signInClient = oneTapClient,
-            db = db,
             gmailSignIn = gmailSignIn,
-            gmailSignUp = gmailSignUp
+            gmailSignUp = gmailSignUp,
+            firebaseFireStore = firebaseFireStore
         )
     }
 }

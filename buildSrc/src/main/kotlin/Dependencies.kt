@@ -1,5 +1,4 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
-import org.gradle.kotlin.dsl.exclude
 import org.gradle.kotlin.dsl.project
 
 object Dependencies {
@@ -26,9 +25,12 @@ object Dependencies {
 
     // Firebase
     const val firebaseBom="com.google.firebase:firebase-bom:${Versions.firebaseBom}"
-    const val firebaseAuth="com.google.firebase:firebase-auth-ktx:${Versions.firebaseAuth}"
+    const val firebaseAuth="com.google.firebase:firebase-auth-ktx"
+    const val firebaseFireStore="com.google.firebase:firebase-firestore-ktx"
+    const val crashlytics="com.google.firebase:firebase-crashlytics-ktx:${Versions.crashlytics}"
+    const val analytics="com.google.firebase:firebase-analytics:${Versions.analytics}"
+    const val crashlyticsPlugin = "com.google.firebase.crashlytics:com.google.firebase.crashlytics.gradle.plugin:${Versions.crashlyticsGradlePlugin}"
     const val googlePlayServicesAuth="com.google.android.gms:play-services-auth:${Versions.gmsAuthServices}"
-    const val fireStore="com.google.firebase:firebase-firestore-ktx:${Versions.fireStore}"
 
     // WorkManager
     const val workManagerRuntime = "androidx.work:work-runtime:${Versions.workManager}"
@@ -55,9 +57,6 @@ object Dependencies {
     const val coroutinesTest="org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
     const val mockK="io.mockk:mockk:${Versions.mockK}"
 
-    // Kotlin JVM
-    const val kotlinJVM = "org.jetbrains.kotlin.jvm:${Versions.kotlin}"
-
     // modules
     const val coreModule=":core"
     const val validation=":core:validation"
@@ -74,7 +73,6 @@ object Dependencies {
     const val feature_search=":feature_search"
     const val dbModule=":db"
     const val networkModule=":network"
-
 }
 
 fun DependencyHandler.appModule(){
@@ -85,7 +83,6 @@ fun DependencyHandler.appModule(){
     implementation(Dependencies.navigationFragment)
     implementation(Dependencies.navigationUi)
     implementation(Dependencies.googlePlayAdsLite)
-    implementation(Dependencies.googleServices)
 }
 
 fun DependencyHandler.firebaseModule(){
@@ -93,14 +90,10 @@ fun DependencyHandler.firebaseModule(){
 }
 
 fun DependencyHandler.firebaseDependencies(){
-    implementation(Dependencies.firebaseBom)
+    implementation(platform(Dependencies.firebaseBom))
     implementation(Dependencies.firebaseAuth)
     implementation(Dependencies.googlePlayServicesAuth)
-    implementation(Dependencies.fireStore){
-        exclude(group = "com.google.protobuf", module = "protobuf-java")
-        exclude(group = "com.google.firebase", module = "protolite-well-known-types")
-        exclude(group = "com.google.protobuf", module = "protobuf-javalite")
-    }
+    implementation(Dependencies.firebaseFireStore)
 }
 
 fun DependencyHandler.androidLibrary(){
@@ -199,4 +192,9 @@ fun DependencyHandler.db(){
 
 fun DependencyHandler.congrats(){
     implementation(project(Dependencies.congrats))
+}
+
+fun DependencyHandler.analyticsDependencies(){
+    implementation(Dependencies.crashlytics)
+    implementation(Dependencies.analytics)
 }

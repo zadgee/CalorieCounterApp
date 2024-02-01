@@ -3,7 +3,7 @@ package glue.sign_up.mapper
 import com.test.sign_up.domain.event.EventSignUp
 import com.test.sign_up.domain.event.ValidationResultSignUp
 import domain.models.ValidationResult
-import domain.event.SignUpEvent
+import domain.di.event.SignUpEvent
 
 fun SignUpEvent.toEventSignUp():EventSignUp{
     return when(this){

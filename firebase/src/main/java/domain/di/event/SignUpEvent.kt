@@ -1,4 +1,4 @@
-package domain.event
+package domain.di.event
 
 sealed class SignUpEvent {
     data object Success : SignUpEvent()

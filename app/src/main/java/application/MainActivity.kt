@@ -4,7 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.gms.ads.MobileAds
 import com.nutrition.caloriecountingapp.R
@@ -43,6 +46,9 @@ class MainActivity : AppCompatActivity(){
 
             if(isUserSignedInAndVerified == true ||
                 isUserSignedInWithGmail == true){
+                sharedPreferences?.edit()?.apply{
+                    putString(SKIP_SPLASH,null)
+                }?.apply()
                 graph?.setStartDestination(R.id.homeFragment)
             } else if(isUserSawStartScreen == true){
                 graph?.setStartDestination(R.id.signUpFragment)
@@ -50,9 +56,47 @@ class MainActivity : AppCompatActivity(){
                 graph?.setStartDestination(R.id.splashFragment)
             }
             navController?.setGraph(
-                graph ?: throw NullPointerException("graph cannot be null")
-                ,intent.extras
+                graph ?: throw NullPointerException(
+                    "graph cannot be null"
+                ),intent.extras
             )
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val bottomNavigationView = binding?.bottomNavView
+        val navController = findNavController(R.id.fragment_container)
+        navController.addOnDestinationChangedListener{
+            _, destination, _ ->
+            when(destination.id == R.id.homeFragment){
+                true ->{
+                    bottomNavigationView?.visibility = VISIBLE
+                }
+                false -> {
+                    bottomNavigationView?.visibility = GONE
+                }
+            }
+        }
+        bottomNavigationView?.setOnItemSelectedListener {
+            menuItem->
+            when(menuItem.itemId){
+                R.id.homeFragment->{
+                    navController.navigate(R.id.homeFragment)
+                    true
+                }
+                R.id.profileFragment->{
+                    navController.navigate(R.id.profileFragment)
+                    true
+                }
+                R.id.searchFragment->{
+                    navController.navigate(R.id.searchFragment)
+                    true
+                }
+                else ->{
+                    false
+                }
+            }
         }
     }
 

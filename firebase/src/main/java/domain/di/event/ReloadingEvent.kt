@@ -1,4 +1,4 @@
-package domain.event
+package domain.di.event
 
 sealed class ReloadingEvent{
     data object Loading: ReloadingEvent()

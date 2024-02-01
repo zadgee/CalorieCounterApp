@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
@@ -38,7 +40,8 @@ class SignUpFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (context.applicationContext as SignUpComponentProvider).provideSignUpComponent(this)
+        (context.applicationContext as SignUpComponentProvider)
+            .provideSignUpComponent(this)
     }
 
     override fun onCreateView(
@@ -128,9 +131,9 @@ class SignUpFragment : Fragment() {
                         result.nameError == null &&
                         result.emailError == null &&
                         result.passwordError == null){
-                        binding?.emailError?.visibility = View.INVISIBLE
-                        binding?.nameError?.visibility = View.INVISIBLE
-                        binding?.passwordError?.visibility = View.INVISIBLE
+                        binding?.emailError?.visibility = INVISIBLE
+                        binding?.nameError?.visibility = INVISIBLE
+                        binding?.passwordError?.visibility = INVISIBLE
                         viewModel.signUp(
                             email = email,
                             password = password
@@ -138,25 +141,26 @@ class SignUpFragment : Fragment() {
                         viewModel.signUpState.collect{
                             event->
                             when(event){
-                                is EventSignUp.Error ->{
+                                is EventSignUp.Error -> {
                                     showToast(
                                         message = event.error,
                                         context = context
                                     )
                                 }
-                                is EventSignUp.Loading ->{
+                                is EventSignUp.Loading -> {
+                                    binding?.progressBarSignUp?.visibility = VISIBLE
                                     Log.d(STATE_LOADING, "Loading...")
                                 }
-                                is EventSignUp.Success ->{
+                                is EventSignUp.Success -> {
                                     sharedPreferences?.edit()?.apply {
                                         putString("name",name)
                                         putString("email",email)
                                         putString("password",password)
                                     }?.apply()
-                                    delay(10)
                                     viewModel.sendEmailVerification()
-                                    delay(50)
-                                    val actionId = viewModel.navigateSignUpToEmailVerification()
+                                    delay(40)
+                                    val actionId = viewModel
+                                        .navigateSignUpToEmailVerification()
                                     findNavController().navigate(actionId)
                                 }
                             }
@@ -165,9 +169,9 @@ class SignUpFragment : Fragment() {
                         binding?.nameError?.text = result.nameError
                         binding?.emailError?.text = result.emailError
                         binding?.passwordError?.text = result.passwordError
-                        binding?.emailError?.visibility = View.VISIBLE
-                        binding?.nameError?.visibility = View.VISIBLE
-                        binding?.passwordError?.visibility = View.VISIBLE
+                        binding?.emailError?.visibility = VISIBLE
+                        binding?.nameError?.visibility = VISIBLE
+                        binding?.passwordError?.visibility = VISIBLE
                     }
                 }
             }

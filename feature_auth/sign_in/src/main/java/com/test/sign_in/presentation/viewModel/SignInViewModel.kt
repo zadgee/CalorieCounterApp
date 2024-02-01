@@ -59,8 +59,8 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    suspend fun sendEmailVerificationLetter(){
-        return withContext(Dispatchers.IO){
+     fun sendEmailVerificationLetter(){
+        viewModelScope.launch(Dispatchers.IO) {
             router.sendEmailVerification()
         }
     }

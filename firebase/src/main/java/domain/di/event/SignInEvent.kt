@@ -1,4 +1,4 @@
-package domain.event
+package domain.di.event
 
 sealed class SignInEvent{
     data class Success(val result: Any): SignInEvent()

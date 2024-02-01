@@ -14,7 +14,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class SignUpViewModel @Inject constructor(
@@ -89,8 +88,8 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    suspend fun sendEmailVerification(){
-        return withContext(Dispatchers.IO){
+     fun sendEmailVerification(){
+        viewModelScope.launch(Dispatchers.IO) {
             router.sendEmailVerification()
         }
     }
@@ -102,6 +101,7 @@ class SignUpViewModel @Inject constructor(
     fun navigateSignUpToSignIn():Int{
         return signUpNavigationRouter.navigateSignUpToSignIn()
     }
+
 
 }
 

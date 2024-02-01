@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -57,4 +58,7 @@ dependencies {
     db()
     dagger()
     firebaseModule()
+    testing()
+    mockK()
+    analyticsDependencies()
 }
