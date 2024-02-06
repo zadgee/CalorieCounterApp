@@ -18,16 +18,20 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import componentProvider.CongratsComponentProvider
 import domain.di.DaggerAuthComponent
 import domain.di.AuthModule
+import domain.repo.ProfileComponentProvider
 import glue.congrats.CongratsModule
 import glue.email_verification.di.EmailVerificationModule
 import glue.forgot_password.di.ForgotPasswordModule
 import glue.navigation.DaggerNavigationComponent
+import glue.profile.di.ProfileModule
 import glue.sign_in.di.SignInModule
 import glue.sign_up.di.SignUpModule
 import presentation.fragment.FragmentCongrats
+import presentation.fragment.UserProfileFragment
 
 class CalorieCountingApplication:Application(), SignUpComponentProvider, SignInComponentProvider,
   EmailVerificationComponentProvider,ForgotPasswordComponentProvider, CongratsComponentProvider,
+  ProfileComponentProvider,
   Configuration.Provider
 {
 
@@ -95,6 +99,13 @@ class CalorieCountingApplication:Application(), SignUpComponentProvider, SignInC
             .build()
     }
 
+    private val profileComponent = applicationComponent
+        .profileComponent()
+        .profileModule(ProfileModule(
+            context = this, navigationComponent = navigationComponent
+            ))
+        .build()
+
     override fun provideViewModelFactory(fragment: EmailVerificationFragment) {
         return emailVerificationComponent.inject(fragment)
     }
@@ -126,5 +137,9 @@ class CalorieCountingApplication:Application(), SignUpComponentProvider, SignInC
         FirebaseCrashlytics
             .getInstance()
             .setCrashlyticsCollectionEnabled(true)
+    }
+
+    override fun provideProfileComponent(fragment: UserProfileFragment) {
+        return profileComponent.inject(fragment)
     }
 }

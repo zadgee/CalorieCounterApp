@@ -36,11 +36,11 @@ import com.test.sign_in.domain.event.ValidationEvent
 import com.test.sign_in.domain.models.UserModel
 import com.test.sign_in.presentation.viewModel.SignInViewModel
 import com.test.sign_in.presentation.viewModel.SignInViewModelFactory
-import com.test.sign_in.presentation.USER_AUTHORIZED_AND_VERIFY_EMAIL
-import com.test.sign_in.presentation.USER_AUTHORIZED_WITH_GMAIL
 import com.test.sign_in.presentation.componentProvider.SignInComponentProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import presentation.USER_AUTHORIZED_AND_VERIFY_EMAIL
+import presentation.USER_AUTHORIZED_WITH_GMAIL
 import presentation.showToast
 
 class SignInFragment : Fragment() {
@@ -62,13 +62,14 @@ class SignInFragment : Fragment() {
                             activityResult = result
                         )
                         sharedPreferences?.edit()?.apply {
+                            putBoolean("SKIP_SPLASH",false)
                             putBoolean(USER_AUTHORIZED_WITH_GMAIL,true)
                         }?.apply()
                         delay(20)
                             loadFullScreenAd()
                             initStates()
                     }
-                } catch(e:Exception){
+                }catch(e:Exception){
                     Log.d("ActivityResultTAG",e.message?:"Unknown error")
                 }
             }
@@ -223,8 +224,10 @@ class SignInFragment : Fragment() {
          )
 
         lifecycleScope.launch {
-            repeatOnLifecycle(viewLifecycleOwner.lifecycle.currentState){
-               viewModel.fieldsState.collect{result->
+            repeatOnLifecycle(
+                viewLifecycleOwner.lifecycle.currentState
+            ){
+               viewModel.fieldsState.collect{ result->
                    if(result.emailError == null && result.passwordError == null){
                        binding?.emailError?.visibility = INVISIBLE
                        binding?.passwordError?.visibility = INVISIBLE
@@ -245,12 +248,20 @@ class SignInFragment : Fragment() {
                                    Log.d("SignInLoading","Loading...")
                                }
                                is EventSignIn.Success ->{
-                                  val isEmailVerified = viewModel.isEmailVerified
+                                  val isEmailVerified = viewModel.isEmailVerified()
                                   if(!isEmailVerified){
                                       showToast(
                                           message = "We've sent you an email to verify your account.",
                                           context = context
                                       )
+                                      val name = viewModel.getUserNameFromFireStore(
+                                          email
+                                      )
+                                      sharedPreferences?.edit()?.apply {
+                                          putString("name",name)
+                                          putString("email",email)
+                                          putString("password",password)
+                                      }?.apply()
                                       viewModel.sendEmailVerificationLetter()
                                       delay(40)
                                       val actionId = viewModel
@@ -265,11 +276,14 @@ class SignInFragment : Fragment() {
                                           UserModel(
                                               name = name,
                                               email = email,
-                                              password = password
+                                              password = password,
+                                              whenAuthorized = viewModel
+                                                  .timeMillisToDateConverter()
                                           )
                                       )
                                       delay(10)
                                       sharedPreferences?.edit()?.apply {
+                                          putBoolean("SKIP_SPLASH",false)
                                           putBoolean(USER_AUTHORIZED_AND_VERIFY_EMAIL,true)
                                       }?.apply()
                                       delay(10)

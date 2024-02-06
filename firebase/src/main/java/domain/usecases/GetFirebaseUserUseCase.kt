@@ -1,4 +1,5 @@
 package domain.usecases
+import android.util.Log
 import com.google.firebase.auth.FirebaseUser
 import domain.repo.AuthenticationRepository
 import javax.inject.Inject
@@ -9,12 +10,14 @@ class GetFirebaseUserUseCase @Inject constructor(
     private val reloadUserUseCase: ReloadUserUseCase
 ) {
 
-     fun user():FirebaseUser?{
+     private fun user():FirebaseUser?{
         return repository.user
     }
 
     fun isEmailVerified():Boolean{
         reloadUserUseCase.reload()
-        return user()?.isEmailVerified?:false
+        val isEmailVerified = user()?.isEmailVerified?:false
+        Log.d("TAG","isEmailVerified: $isEmailVerified")
+        return isEmailVerified
     }
 }

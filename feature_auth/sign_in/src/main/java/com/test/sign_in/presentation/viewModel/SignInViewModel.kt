@@ -1,4 +1,5 @@
 package com.test.sign_in.presentation.viewModel
+import android.annotation.SuppressLint
 import android.content.IntentSender
 import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
@@ -18,13 +19,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
 import javax.inject.Inject
 
 class SignInViewModel @Inject constructor(
     private val validationRepositorySignIn: ValidationRepositorySignIn,
     private val signInRepository: SignInRepository,
     private val router: SignInRouter,
-    val isEmailVerified:Boolean,
     private val signInNavigationRouter: SignInNavigationRouter
 ) : ViewModel() {
     private val _signInState = MutableStateFlow<EventSignIn>(EventSignIn.Loading)
@@ -124,7 +126,8 @@ class SignInViewModel @Inject constructor(
                GmailUserModel(
                    id = "",
                    name = "",
-                   photoUrl = ""
+                   photoUrl = "",
+                   whenAuthorized = timeMillisToDateConverter()
                )
            )
        }
@@ -152,13 +155,23 @@ class SignInViewModel @Inject constructor(
         return signInNavigationRouter.navigateSignInToEmailVerification()
     }
 
+    @SuppressLint("SimpleDateFormat")
+    fun timeMillisToDateConverter():String{
+        val date = Date(System.currentTimeMillis())
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        return dateFormat.format(date)
+    }
+
+    fun isEmailVerified():Boolean{
+        return router.reloadUserAndVerifyEmail()
+    }
+
 }
 
 class SignInViewModelFactory @Inject constructor(
     private val validationRepositorySignIn: ValidationRepositorySignIn,
     private val signInRepository: SignInRepository,
     private val router: SignInRouter,
-    val isEmailVerified:Boolean,
     private val signInNavigationRouter: SignInNavigationRouter
 ):ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -167,7 +180,6 @@ class SignInViewModelFactory @Inject constructor(
                  validationRepositorySignIn = validationRepositorySignIn,
                  signInRepository = signInRepository,
                  router = router,
-                 isEmailVerified = isEmailVerified,
                  signInNavigationRouter = signInNavigationRouter
             ) as T
         }else{

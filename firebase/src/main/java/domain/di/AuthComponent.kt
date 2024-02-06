@@ -3,6 +3,8 @@ import dagger.Component
 import domain.di.scopes.AuthScope
 import domain.repo.AuthenticationRepository
 import domain.usecases.ReloadUserUseCase
+import domain.usecases.SignOutWhileUsingEmailPasswordUseCase
+import domain.usecases.SignOutWhileUsingGmailAuth
 
 @Component(
     modules = [
@@ -17,6 +19,8 @@ interface AuthComponent{
         fun build(): AuthComponent
     }
     fun getAuthRepository():AuthenticationRepository
+    fun getSignOutWhileUsingEmailPasswordUseCase(): SignOutWhileUsingEmailPasswordUseCase
+    fun getSignOutWhileUsingGmailAuthUseCase(): SignOutWhileUsingGmailAuth
     fun getReloadUserUseCase():ReloadUserUseCase
     fun getAuthComponent():AuthComponent
 }

@@ -7,4 +7,6 @@ interface UserDataSource {
     suspend fun getUser():UserEntity?
     suspend fun insertGmailUser(gmailUserEntity: GmailUserEntity)
     suspend fun getGmailUser():GmailUserEntity?
+    suspend fun deleteUserFromDB(user: UserEntity)
+    suspend fun deleteGmailUserFromDB(user: GmailUserEntity)
 }

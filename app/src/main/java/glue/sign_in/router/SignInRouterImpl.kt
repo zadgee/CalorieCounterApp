@@ -9,6 +9,7 @@ import domain.models.UserEntity
 import domain.usecases.InsertGmailUserUseCase
 import domain.usecases.InsertUserUseCase
 import domain.usecases.GetFirebaseUserDataUseCase
+import domain.usecases.GetFirebaseUserUseCase
 import domain.usecases.GetUserNameFromFireStoreByEmail
 import domain.usecases.GmailAuthUseCase
 import domain.usecases.GmailSignInUseCase
@@ -24,7 +25,8 @@ class SignInRouterImpl @Inject constructor(
     private val gmailSignUpUseCase:GmailSignUpUseCase,
     private val gmailAuthUseCase:GmailAuthUseCase,
     private val getFirebaseUserDataUseCase:GetFirebaseUserDataUseCase,
-    private val insertGmailUserUseCase:InsertGmailUserUseCase
+    private val insertGmailUserUseCase:InsertGmailUserUseCase,
+    private val getFirebaseUserUseCase: GetFirebaseUserUseCase
 ): SignInRouter {
 
     override suspend fun launchGmailSignUp(): IntentSender {
@@ -48,7 +50,8 @@ class SignInRouterImpl @Inject constructor(
             UserEntity(
                 email = userModel.email,
                 password = userModel.password,
-                name = userModel.name
+                name = userModel.name,
+                whenAuthorized = userModel.whenAuthorized
             )
         )
     }
@@ -59,13 +62,18 @@ class SignInRouterImpl @Inject constructor(
             GmailUserEntity(
                 id = gmailUserData.id,
                 name = user.name,
-                photoUrl = user.photoUrl
+                photoUrl = user.photoUrl,
+                whenAuthorized = user.whenAuthorized
             )
         )
     }
 
     override suspend fun initGmailAuth(activityResult: ActivityResult) {
         return gmailAuthUseCase.gmailAuth(activityResult)
+    }
+
+    override fun reloadUserAndVerifyEmail(): Boolean {
+        return getFirebaseUserUseCase.isEmailVerified()
     }
 
 }

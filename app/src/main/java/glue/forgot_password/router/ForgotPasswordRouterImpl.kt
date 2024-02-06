@@ -11,5 +11,4 @@ class ForgotPasswordRouterImpl @Inject constructor(
         return sendPasswordResetEmailUseCase.send(email)
     }
 
-
 }

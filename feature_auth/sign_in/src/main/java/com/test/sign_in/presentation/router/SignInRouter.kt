@@ -12,4 +12,5 @@ interface SignInRouter {
     suspend fun sendEmailVerification()
     suspend fun getUserNameFromFireStore(email:String): String
     suspend fun initGmailAuth(activityResult: ActivityResult)
+    fun reloadUserAndVerifyEmail():Boolean
 }

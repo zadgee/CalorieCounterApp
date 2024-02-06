@@ -57,7 +57,8 @@ class SignInModule(
        gmailSignInUseCase: GmailSignInUseCase,
        gmailSignUpUseCase: GmailSignUpUseCase,
        getFirebaseUserDataUseCase: GetFirebaseUserDataUseCase,
-       insertGmailUserUseCase: InsertGmailUserUseCase
+       insertGmailUserUseCase: InsertGmailUserUseCase,
+       getFirebaseUserUseCase: GetFirebaseUserUseCase
    ): SignInRouter {
        return SignInRouterImpl(
            sendEmailVerificationLetterUseCase = sendEmailVerificationLetterUseCase,
@@ -67,20 +68,19 @@ class SignInModule(
            gmailSignUpUseCase = gmailSignUpUseCase,
            gmailAuthUseCase = gmailAuthUseCase,
            getFirebaseUserDataUseCase = getFirebaseUserDataUseCase,
-           insertGmailUserUseCase = insertGmailUserUseCase
+           insertGmailUserUseCase = insertGmailUserUseCase,
+           getFirebaseUserUseCase = getFirebaseUserUseCase
        )
    }
 
 
    @Provides
    fun provideViewModelFactory(
-       getFirebaseUserUseCase: GetFirebaseUserUseCase,
        signInRepository: SignInRepository,
        signInRouter: SignInRouter,
        validationRepositorySignIn: ValidationRepositorySignIn,
    ): SignInViewModelFactory {
       return SignInViewModelFactory(
-          isEmailVerified = getFirebaseUserUseCase.isEmailVerified(),
           signInRepository = signInRepository,
           router = signInRouter,
           validationRepositorySignIn = validationRepositorySignIn,

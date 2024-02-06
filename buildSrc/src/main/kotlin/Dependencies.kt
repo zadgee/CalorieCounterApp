@@ -57,6 +57,9 @@ object Dependencies {
     const val coroutinesTest="org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
     const val mockK="io.mockk:mockk:${Versions.mockK}"
 
+    // Coil
+    const val coil="io.coil-kt:coil:${Versions.coil}"
+
     // modules
     const val coreModule=":core"
     const val validation=":core:validation"
@@ -136,8 +139,8 @@ fun DependencyHandler.lifecycle(){
     implementation(Dependencies.lifecycleViewModel)
 }
 
-fun DependencyHandler.glide(){
-    implementation(Dependencies.glide)
+fun DependencyHandler.coil(){
+    implementation(Dependencies.coil)
 }
 
 fun DependencyHandler.ktor(){

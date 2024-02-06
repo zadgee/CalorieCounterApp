@@ -9,12 +9,15 @@ import com.test.sign_up.presentation.fragment.SignUpFragment
 import com.test.sign_up.presentation.router.SignUpNavigationRouter
 import dagger.Module
 import dagger.Provides
+import domain.repo.ProfileNavRouter
 import glue.email_verification.di.EmailVerificationComponent
 import glue.forgot_password.di.ForgotPasswordComponent
 import glue.navigationRouters.CongratsNavRouterImpl
 import glue.navigationRouters.EmailVerificationNavRouterImpl
+import glue.navigationRouters.ProfileNavigationNavRouterImpl
 import glue.navigationRouters.SignInNavigationRouterImpl
 import glue.navigationRouters.SignUpNavigationRouterImpl
+import glue.profile.di.ProfileComponent
 import glue.sign_in.di.SignInComponent
 import glue.sign_up.di.SignUpComponent
 import presentation.fragment.FragmentCongrats
@@ -25,7 +28,8 @@ import router.CongratsNavRouter
         SignUpComponent::class,
         SignInComponent::class,
         EmailVerificationComponent::class,
-        ForgotPasswordComponent::class
+        ForgotPasswordComponent::class,
+        ProfileComponent::class
     ]
 )
 class NavigationModule {
@@ -141,6 +145,29 @@ class NavigationModule {
     @Provides
     fun provideCongratsFragment():FragmentCongrats{
         return FragmentCongrats()
+    }
+
+    @Provides
+    @ProfileToSignUp
+    fun provideProfileToSignUpActionId():Int{
+        return R.id.action_profileFragment_to_signUpFragment
+    }
+
+    @Provides
+    @ProfileToSignIn
+    fun provideProfileToSignInActionId():Int{
+        return R.id.action_profileFragment_to_signInFragment
+    }
+
+    @Provides
+    fun provideProfileNavRouter(
+        @ProfileToSignIn profileToSignIn:Int,
+        @ProfileToSignUp profileToSignUp:Int
+    ):ProfileNavRouter{
+        return ProfileNavigationNavRouterImpl(
+            profileToSignIn = profileToSignIn,
+            profileToSignUp = profileToSignUp
+        )
     }
 
 }

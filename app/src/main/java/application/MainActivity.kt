@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.lifecycle.lifecycleScope
@@ -12,9 +13,9 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.gms.ads.MobileAds
 import com.nutrition.caloriecountingapp.R
 import com.nutrition.caloriecountingapp.databinding.ActivityMainBinding
-import com.test.sign_in.presentation.USER_AUTHORIZED_AND_VERIFY_EMAIL
-import com.test.sign_in.presentation.USER_AUTHORIZED_WITH_GMAIL
 import kotlinx.coroutines.launch
+import presentation.USER_AUTHORIZED_AND_VERIFY_EMAIL
+import presentation.USER_AUTHORIZED_WITH_GMAIL
 
 class MainActivity : AppCompatActivity(){
     private var binding: ActivityMainBinding? = null
@@ -67,9 +68,20 @@ class MainActivity : AppCompatActivity(){
         super.onStart()
         val bottomNavigationView = binding?.bottomNavView
         val navController = findNavController(R.id.fragment_container)
+        val isUserSignedInAndVerified = sharedPreferences?.getBoolean(
+            USER_AUTHORIZED_AND_VERIFY_EMAIL,false
+        )
+
+        val isUserSignedInWithGmail = sharedPreferences?.getBoolean(
+            USER_AUTHORIZED_WITH_GMAIL,false
+        )
         navController.addOnDestinationChangedListener{
             _, destination, _ ->
-            when(destination.id == R.id.homeFragment){
+            when(
+                isUserSignedInAndVerified == true||
+                isUserSignedInWithGmail == true ||
+                destination.id == R.id.homeFragment
+            ){
                 true ->{
                     bottomNavigationView?.visibility = VISIBLE
                 }
@@ -86,6 +98,7 @@ class MainActivity : AppCompatActivity(){
                     true
                 }
                 R.id.profileFragment->{
+                    Log.d("TAG","profileFragment clicked")
                     navController.navigate(R.id.profileFragment)
                     true
                 }

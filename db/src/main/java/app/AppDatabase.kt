@@ -19,8 +19,11 @@ import domain.models.UserEntity
       ),
        AutoMigration(
             from = 2, to = 3, spec = AppDatabase.MigrationSpec_2_3::class
+       ),
+       AutoMigration(
+           from = 3, to = 4, spec = AppDatabase.MigrationSpec_3_4::class
        )],
-    version = 3,
+    version = 4,
     exportSchema = true
 )
 abstract class AppDatabase: RoomDatabase() {
@@ -32,6 +35,6 @@ abstract class AppDatabase: RoomDatabase() {
         toColumnName = "authorized_to_system_time"
     )
     class MigrationSpec_1_2: AutoMigrationSpec
-
     class MigrationSpec_2_3: AutoMigrationSpec
+    class MigrationSpec_3_4: AutoMigrationSpec
 }

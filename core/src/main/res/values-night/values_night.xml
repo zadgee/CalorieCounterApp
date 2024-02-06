@@ -25,7 +25,7 @@
     </style>
 
     <style name="bottomNavigationBarStyle">
-        <item name="android:background">@drawable/rounded_corner_for_textfieds_dark_theme</item>
+        <item name="android:background">@drawable/rounded_corner_bottom_nav_view_dark_mode</item>
         <item name="menu">@menu/navigation_menu</item>
         <item name="android:fontFamily">@font/title_font_splash</item>
         <item name="itemTextColor">@color/white</item>

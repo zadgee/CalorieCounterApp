@@ -3,6 +3,7 @@ import com.test.email_verification.presentation.router.EmailVerificationNavigati
 import com.test.sign_in.presentation.router.SignInNavigationRouter
 import com.test.sign_up.presentation.router.SignUpNavigationRouter
 import dagger.Component
+import domain.repo.ProfileNavRouter
 import router.CongratsNavRouter
 
 @Component(
@@ -18,5 +19,6 @@ interface NavigationComponent{
     fun getSignUpNavigationRouter(): SignUpNavigationRouter
     fun getSignInNavigationRouter(): SignInNavigationRouter
     fun getEmailVerificationNavigationRouter(): EmailVerificationNavigationRouter
+    fun getProfileNavRouter(): ProfileNavRouter
     fun getCongratsNavRouter(): CongratsNavRouter
 }

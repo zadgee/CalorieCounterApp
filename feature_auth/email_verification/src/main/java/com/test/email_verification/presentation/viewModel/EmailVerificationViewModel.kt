@@ -1,4 +1,5 @@
 package com.test.email_verification.presentation.viewModel
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -12,6 +13,8 @@ import com.test.email_verification.presentation.router.EmailVerificationRouter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -75,6 +78,13 @@ class EmailVerificationViewModel @Inject constructor(
 
     fun navigateToCongrats():Int{
         return emailVerificationNavigationRouter.navigateToCongrats()
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun timeMillisToDateConverter():String{
+        val date = Date(System.currentTimeMillis())
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        return dateFormat.format(date)
     }
 
 }

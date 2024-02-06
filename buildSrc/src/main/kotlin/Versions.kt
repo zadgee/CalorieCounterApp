@@ -25,4 +25,5 @@ object Versions {
     const val kotlinSerialization="1.6.2"
     const val coroutines="1.7.3"
     const val crashlyticsGradlePlugin="2.9.9"
+    const val coil="2.5.0"
 }

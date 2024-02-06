@@ -39,4 +39,5 @@ dependencies {
     androidLibrary()
     testing()
     core()
+    coil()
 }

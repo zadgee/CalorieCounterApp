@@ -14,7 +14,8 @@ class EmailVerificationRouterImpl @Inject constructor(
             UserEntity(
                 email = user.email,
                 name = user.name,
-                password = user.password
+                password = user.password,
+                whenAuthorized = user.whenAuthorized
             )
         )
     }

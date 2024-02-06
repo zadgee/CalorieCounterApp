@@ -138,7 +138,8 @@ class EmailVerificationFragment : Fragment() {
         val user = UserModel(
             name = name?:throw NullPointerException ("name is null"),
             email = email?:throw NullPointerException ("email is null"),
-            password = password ?:throw NullPointerException ("password is null")
+            password = password ?:throw NullPointerException ("password is null"),
+            whenAuthorized = viewModel.timeMillisToDateConverter()
         )
         viewModel.saveUserToLocalDb(
             user
@@ -159,6 +160,7 @@ class EmailVerificationFragment : Fragment() {
         binding = null
         workManager = null
         sharedPreferences?.edit()?.apply {
+            putBoolean("SKIP_SPLASH",false)
             putString("name",null)
             putString("email",null)
             putString("password",null)

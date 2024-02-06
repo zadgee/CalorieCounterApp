@@ -4,6 +4,8 @@ import dagger.Module
 import dagger.Provides
 import domain.di.AuthComponent
 import domain.usecases.AddUserToFireStoreUseCase
+import domain.usecases.DeleteGmailUserFromDBUseCase
+import domain.usecases.DeleteUserFromDBUseCase
 import domain.usecases.DeleteUserFromFirebaseUseCase
 import domain.usecases.GetAuthCredentialUseCase
 import domain.usecases.GetFirebaseUserDataUseCase
@@ -42,7 +44,6 @@ class UseCasesModule(
 ) {
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
         fun provideSendEmailVerificationLetterUseCase(): SendEmailVerificationLetterUseCase {
         return SendEmailVerificationLetterUseCase(
@@ -52,7 +53,6 @@ class UseCasesModule(
 
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
     fun provideLoginUseCase(): LoginUseCase {
         return LoginUseCase(
@@ -61,7 +61,6 @@ class UseCasesModule(
     }
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
     fun provideSignUpUseCase(): SignUpUseCase {
         return SignUpUseCase(
@@ -70,7 +69,6 @@ class UseCasesModule(
     }
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
     fun provideAddUserToFireStoreUseCase(): AddUserToFireStoreUseCase {
         return AddUserToFireStoreUseCase(
@@ -79,7 +77,6 @@ class UseCasesModule(
     }
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
     fun deleteUserFromFirebaseUseCase(): DeleteUserFromFirebaseUseCase {
         return DeleteUserFromFirebaseUseCase(
@@ -88,7 +85,6 @@ class UseCasesModule(
     }
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
     fun provideReloadUserUseCase(): ReloadUserUseCase {
         return ReloadUserUseCase(
@@ -97,7 +93,6 @@ class UseCasesModule(
      }
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
     fun provideGetFirebaseUserDataUseCase(): GetFirebaseUserDataUseCase {
         return GetFirebaseUserDataUseCase(
@@ -106,7 +101,6 @@ class UseCasesModule(
     }
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
     fun provideSignOutWhileUsingEmailPasswordUseCase(): SignOutWhileUsingEmailPasswordUseCase {
         return SignOutWhileUsingEmailPasswordUseCase(
@@ -115,7 +109,6 @@ class UseCasesModule(
     }
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
     fun provideSignOutWhileUsingGmailAuth(): SignOutWhileUsingGmailAuth {
         return SignOutWhileUsingGmailAuth(
@@ -124,7 +117,6 @@ class UseCasesModule(
     }
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
     fun provideGetUserNameFromFireStoreByEmail(): GetUserNameFromFireStoreByEmail {
         return GetUserNameFromFireStoreByEmail(
@@ -133,7 +125,6 @@ class UseCasesModule(
     }
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
     fun provideSendPasswordResetEmailUseCase(): SendPasswordResetEmailUseCase {
         return SendPasswordResetEmailUseCase(
@@ -142,7 +133,6 @@ class UseCasesModule(
     }
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
     fun provideGmailSignInUseCase(): GmailSignInUseCase {
         return GmailSignInUseCase(
@@ -151,7 +141,6 @@ class UseCasesModule(
     }
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
     fun provideGetAuthCredUseCase(): GetAuthCredentialUseCase {
         return GetAuthCredentialUseCase(
@@ -160,7 +149,6 @@ class UseCasesModule(
     }
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
     fun provideGmailSignUpUseCase(): GmailSignUpUseCase {
         return GmailSignUpUseCase(
@@ -177,7 +165,6 @@ class UseCasesModule(
     }
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
     fun provideInsertUserUseCase(): InsertUserUseCase {
         return InsertUserUseCase(
@@ -186,7 +173,6 @@ class UseCasesModule(
     }
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
     fun provideInsertGmailUserUseCase(): InsertGmailUserUseCase {
         return InsertGmailUserUseCase(
@@ -203,7 +189,6 @@ class UseCasesModule(
     }
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
     fun provideGmailAuthUseCase(
         getAuthCredentialUseCase: GetAuthCredentialUseCase
@@ -215,12 +200,27 @@ class UseCasesModule(
     }
 
     @Provides
-    @ApplicationScope
     @BinaryUseCases
     fun provideGetFirebaseUserUseCase(): GetFirebaseUserUseCase {
         return GetFirebaseUserUseCase(
              repository = authComponent.getAuthRepository(),
              reloadUserUseCase = authComponent.getReloadUserUseCase()
+        )
+    }
+
+    @Provides
+    @BinaryUseCases
+    fun provideDeleteUserFromDBUseCase():DeleteUserFromDBUseCase{
+        return DeleteUserFromDBUseCase(
+            userDataSource = databaseComponent.getRepo()
+        )
+    }
+
+    @Provides
+    @BinaryUseCases
+    fun provideDeleteGmailUserFromDBUseCase():DeleteGmailUserFromDBUseCase{
+        return DeleteGmailUserFromDBUseCase(
+            userDataSource = databaseComponent.getRepo()
         )
     }
 }

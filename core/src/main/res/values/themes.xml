@@ -33,7 +33,7 @@
 
 
     <style name="bottomNavigationBarStyle">
-        <item name="android:background">@drawable/rounded_corner_for_fields</item>
+        <item name="android:background">@drawable/rounded_corner_bottom_nav_view</item>
         <item name="menu">@menu/navigation_menu</item>
         <item name="android:fontFamily">@font/title_font_splash</item>
         <item name="itemTextColor">@color/customBlack</item>

@@ -35,4 +35,12 @@ class UserDataSourceImpl @Inject constructor(
         return userDAO.getGmailUser()
     }
 
+    override suspend fun deleteUserFromDB(user: UserEntity) {
+        return userDAO.deleteUserFromDB(user)
+    }
+
+    override suspend fun deleteGmailUserFromDB(user: GmailUserEntity) {
+        return userDAO.deleteGmailUserFromDB(user)
+    }
+
 }

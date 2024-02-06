@@ -29,3 +29,11 @@ annotation class SignInToHome
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class SignInToForgotPassword
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class ProfileToSignIn
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class ProfileToSignUp

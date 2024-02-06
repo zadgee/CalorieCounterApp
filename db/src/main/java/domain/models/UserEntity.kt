@@ -1,5 +1,4 @@
 package domain.models
-
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -15,5 +14,5 @@ data class UserEntity(
     @ColumnInfo(name = "password")
     val password:String,
     @ColumnInfo(name = "authorized_to_system_time")
-    val whenAuthorized:Long = System.currentTimeMillis(),
+    val whenAuthorized:String,
 )
