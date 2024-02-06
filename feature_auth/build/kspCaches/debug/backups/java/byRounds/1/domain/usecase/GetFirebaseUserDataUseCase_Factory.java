@@ -1,0 +1,44 @@
+package domain.usecase;
+
+import dagger.internal.DaggerGenerated;
+import dagger.internal.Factory;
+import dagger.internal.QualifierMetadata;
+import dagger.internal.ScopeMetadata;
+import domain.repository.AuthenticationRepository;
+import javax.annotation.processing.Generated;
+import javax.inject.Provider;
+
+@ScopeMetadata
+@QualifierMetadata
+@DaggerGenerated
+@Generated(
+    value = "dagger.internal.codegen.ComponentProcessor",
+    comments = "https://dagger.dev"
+)
+@SuppressWarnings({
+    "unchecked",
+    "rawtypes",
+    "KotlinInternal",
+    "KotlinInternalInJava"
+})
+public final class GetFirebaseUserDataUseCase_Factory implements Factory<GetFirebaseUserDataUseCase> {
+  private final Provider<AuthenticationRepository> repositoryProvider;
+
+  public GetFirebaseUserDataUseCase_Factory(Provider<AuthenticationRepository> repositoryProvider) {
+    this.repositoryProvider = repositoryProvider;
+  }
+
+  @Override
+  public GetFirebaseUserDataUseCase get() {
+    return newInstance(repositoryProvider.get());
+  }
+
+  public static GetFirebaseUserDataUseCase_Factory create(
+      Provider<AuthenticationRepository> repositoryProvider) {
+    return new GetFirebaseUserDataUseCase_Factory(repositoryProvider);
+  }
+
+  public static GetFirebaseUserDataUseCase newInstance(AuthenticationRepository repository) {
+    return new GetFirebaseUserDataUseCase(repository);
+  }
+}

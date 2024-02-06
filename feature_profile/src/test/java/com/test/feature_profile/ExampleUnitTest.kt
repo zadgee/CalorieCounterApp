@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:feature_profile/src/test/java/com/test/feature_profile/ExampleUnitTest.kt
 package com.test.feature_profile
+========
+package com.test.di
+>>>>>>>> origin/feature_home:feature_profile/src/test/java/com/test/di/ExampleUnitTest.kt
 
 import org.junit.Test
 

@@ -1,1 +1,0 @@
-const val SKIP_SPLASH = "SKIP_SPLASH"
