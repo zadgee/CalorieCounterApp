@@ -1,5 +1,4 @@
 package application
-import SKIP_SPLASH
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +15,7 @@ import com.nutrition.caloriecountingapp.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
 import presentation.USER_AUTHORIZED_AND_VERIFY_EMAIL
 import presentation.USER_AUTHORIZED_WITH_GMAIL
+import splashScreen.SKIP_SPLASH
 
 class MainActivity : AppCompatActivity(){
     private var binding: ActivityMainBinding? = null
@@ -67,11 +67,12 @@ class MainActivity : AppCompatActivity(){
     override fun onStart() {
         super.onStart()
         val bottomNavigationView = binding?.bottomNavView
-        val navController = findNavController(R.id.fragment_container)
+        val navController = findNavController(
+            binding?.fragmentContainer?.id?:0
+        )
         val isUserSignedInAndVerified = sharedPreferences?.getBoolean(
             USER_AUTHORIZED_AND_VERIFY_EMAIL,false
         )
-
         val isUserSignedInWithGmail = sharedPreferences?.getBoolean(
             USER_AUTHORIZED_WITH_GMAIL,false
         )
@@ -93,16 +94,16 @@ class MainActivity : AppCompatActivity(){
         bottomNavigationView?.setOnItemSelectedListener {
             menuItem->
             when(menuItem.itemId){
-                R.id.homeFragment->{
+                com.nutrition.core.R.id.home_item->{
                     navController.navigate(R.id.homeFragment)
                     true
                 }
-                R.id.profileFragment->{
+                com.nutrition.core.R.id.profile_item->{
                     Log.d("TAG","profileFragment clicked")
                     navController.navigate(R.id.profileFragment)
                     true
                 }
-                R.id.searchFragment->{
+                com.nutrition.core.R.id.profile_item->{
                     navController.navigate(R.id.searchFragment)
                     true
                 }

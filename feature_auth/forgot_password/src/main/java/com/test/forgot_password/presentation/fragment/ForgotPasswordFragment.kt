@@ -21,7 +21,7 @@ import com.test.forgot_password.presentation.viewmodel.ForgotPasswordViewModel
 import com.test.forgot_password.presentation.viewmodel.ForgotPasswordViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import presentation.showToast
+import utils.showToast
 import javax.inject.Inject
 
 class ForgotPasswordFragment : Fragment() {

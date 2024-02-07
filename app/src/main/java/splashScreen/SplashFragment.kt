@@ -1,5 +1,4 @@
 package splashScreen
-import SKIP_SPLASH
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle

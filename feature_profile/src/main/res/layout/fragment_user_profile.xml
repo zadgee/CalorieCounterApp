@@ -9,6 +9,7 @@
 
 
     <LinearLayout
+        android:id="@+id/profileImageLayout"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:orientation="horizontal">
@@ -24,14 +25,16 @@
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:orientation="vertical">
+
         <TextView
+            android:gravity="center"
             android:id="@+id/specificUserName"
-            android:textSize="30sp"
             style="@style/textColors"
-            android:text="Username"
-            android:fontFamily="@font/title_font_splash"
             android:layout_width="150dp"
-            android:layout_height="50dp"/>
+            android:layout_height="50dp"
+            android:fontFamily="@font/title_font_splash"
+            android:text="Username"
+            android:textSize="30sp" />
 
     </LinearLayout>
 

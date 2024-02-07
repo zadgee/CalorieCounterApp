@@ -41,7 +41,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import presentation.USER_AUTHORIZED_AND_VERIFY_EMAIL
 import presentation.USER_AUTHORIZED_WITH_GMAIL
-import presentation.showToast
+import utils.showToast
 
 class SignInFragment : Fragment() {
     private var binding:FragmentSignInBinding?=null

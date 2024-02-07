@@ -25,7 +25,7 @@ import com.test.sign_up.presentation.viewModel.SignUpViewModel
 import com.test.sign_up.presentation.viewModel.SignUpViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import presentation.showToast
+import utils.showToast
 import javax.inject.Inject
 
 private const val STATE_LOADING = "StateLoading"

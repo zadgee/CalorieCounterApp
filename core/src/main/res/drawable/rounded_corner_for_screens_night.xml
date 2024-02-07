@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-<<<<<<<< HEAD:core/src/main/res/drawable/rounded_corner_for_screens_night.xml
-    <solid android:color="@color/black"/>
-    <stroke android:width="4dp" android:color="@color/black" />
-    <corners android:radius="7dp"/>
-========
-    <solid android:color="#252525"/>
-    <stroke android:width="4dp" android:color="#252525" />
-    <corners android:radius="60dp"/>
->>>>>>>> origin/feature_home:core/src/main/res/drawable/rounded_corner_for_recview_item_dark_theme.xml
+    <solid android:color="#0D0D0D"/>
+    <stroke android:width="4dp" android:color="#0D0D0D" />
+    <corners android:radius="25dp"/>
     <padding android:left="0dp" android:top="0dp" android:right="0dp" android:bottom="0dp" />
 </shape>

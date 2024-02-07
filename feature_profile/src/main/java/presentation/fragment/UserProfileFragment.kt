@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -71,6 +72,14 @@ private var sharedPreferences:SharedPreferences?=null
                  binding?.userProfileImage?.setImageResource(
                      defaultAuthUserData.photoProfile ?: 0
                  )
+                 binding?.profileImageLayout?.updateLayoutParams {
+                     width = 100
+                     height = 100
+                 }
+                 binding?.userProfileImage?.updateLayoutParams {
+                     width = 100
+                     height = 100
+                 }
                  binding?.specificUserName?.text = defaultAuthUserData.name
              }
         }

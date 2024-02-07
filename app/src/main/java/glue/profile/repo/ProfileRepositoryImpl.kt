@@ -18,7 +18,7 @@ import glue.profile.mapper.toProfileUserDataGmailAuthModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import presentation.showToast
+import utils.showToast
 import javax.inject.Inject
 
 class ProfileRepositoryImpl @Inject constructor(

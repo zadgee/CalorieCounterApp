@@ -22,8 +22,8 @@ import com.test.email_verification.presentation.viewModel.EmailVerificationViewM
 import com.test.email_verification.presentation.viewModel.EmailVerificationViewModelFactory
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import presentation.showToast
-import presentation.showToastLong
+import utils.showToast
+import utils.showToastLong
 import javax.inject.Inject
 
 private const val WORK_MANAGER = "WorkManagerTAG"
