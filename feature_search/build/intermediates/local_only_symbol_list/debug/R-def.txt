@@ -1,4 +1,8 @@
 R_DEF: Internal format may change without notice
 local
+id adViewInsideSearch
+id imageView
+id searchButton
+id searchFoodView
 layout fragment_search
 string search_your_favourite_food

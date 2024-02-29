@@ -2,6 +2,7 @@
 <resources>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#0D0D0D</color>
+    <color name="defaultBlack">#000000</color>
     <color name="customBlack">#09051C</color>
     <color name="grey">#3B3B3B</color>
     <color name="red">#FF0000</color>
@@ -11,5 +12,9 @@
     <color name="textFieldColorForDarkTheme">#252525</color>
     <color name="textColorForTextFieldLightTheme">#C4C4C4</color>
     <color name="colorForActiveFragmentInNavigationBar">#EBFBF3</color>
-    <color name="search_color_light_theme">#F9A84D</color>
+    <color name="searchViewLightColor">#FFF7EE</color>
+    <color name="secondColorForSearchViewLight">#FF9012</color>
+    <color name="searchViewDarkColor">#252525</color>
+    <color name="whatDoYouWantToSearchLight">#F0BC98</color>
+    <color name="whatDoYouWantToSearchDark">#7C7C7C</color>
 </resources>

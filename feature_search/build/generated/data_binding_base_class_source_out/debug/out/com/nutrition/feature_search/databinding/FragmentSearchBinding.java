@@ -4,25 +4,49 @@ package com.nutrition.feature_search.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewbinding.ViewBinding;
+import androidx.viewbinding.ViewBindings;
+import com.google.android.gms.ads.AdView;
 import com.nutrition.feature_search.R;
 import java.lang.NullPointerException;
 import java.lang.Override;
+import java.lang.String;
 
 public final class FragmentSearchBinding implements ViewBinding {
   @NonNull
-  private final FrameLayout rootView;
+  private final ConstraintLayout rootView;
 
-  private FragmentSearchBinding(@NonNull FrameLayout rootView) {
+  @NonNull
+  public final AdView adViewInsideSearch;
+
+  @NonNull
+  public final ImageView imageView;
+
+  @NonNull
+  public final AppCompatButton searchButton;
+
+  @NonNull
+  public final SearchView searchFoodView;
+
+  private FragmentSearchBinding(@NonNull ConstraintLayout rootView,
+      @NonNull AdView adViewInsideSearch, @NonNull ImageView imageView,
+      @NonNull AppCompatButton searchButton, @NonNull SearchView searchFoodView) {
     this.rootView = rootView;
+    this.adViewInsideSearch = adViewInsideSearch;
+    this.imageView = imageView;
+    this.searchButton = searchButton;
+    this.searchFoodView = searchFoodView;
   }
 
   @Override
   @NonNull
-  public FrameLayout getRoot() {
+  public ConstraintLayout getRoot() {
     return rootView;
   }
 
@@ -43,10 +67,38 @@ public final class FragmentSearchBinding implements ViewBinding {
 
   @NonNull
   public static FragmentSearchBinding bind(@NonNull View rootView) {
-    if (rootView == null) {
-      throw new NullPointerException("rootView");
-    }
+    // The body of this method is generated in a way you would not otherwise write.
+    // This is done to optimize the compiled bytecode for size and performance.
+    int id;
+    missingId: {
+      id = R.id.adViewInsideSearch;
+      AdView adViewInsideSearch = ViewBindings.findChildViewById(rootView, id);
+      if (adViewInsideSearch == null) {
+        break missingId;
+      }
 
-    return new FragmentSearchBinding((FrameLayout) rootView);
+      id = R.id.imageView;
+      ImageView imageView = ViewBindings.findChildViewById(rootView, id);
+      if (imageView == null) {
+        break missingId;
+      }
+
+      id = R.id.searchButton;
+      AppCompatButton searchButton = ViewBindings.findChildViewById(rootView, id);
+      if (searchButton == null) {
+        break missingId;
+      }
+
+      id = R.id.searchFoodView;
+      SearchView searchFoodView = ViewBindings.findChildViewById(rootView, id);
+      if (searchFoodView == null) {
+        break missingId;
+      }
+
+      return new FragmentSearchBinding((ConstraintLayout) rootView, adViewInsideSearch, imageView,
+          searchButton, searchFoodView);
+    }
+    String missingId = rootView.getResources().getResourceName(id);
+    throw new NullPointerException("Missing required view with ID: ".concat(missingId));
   }
 }

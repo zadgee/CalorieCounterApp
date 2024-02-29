@@ -3,7 +3,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.lifecycle.lifecycleScope
@@ -99,11 +98,10 @@ class MainActivity : AppCompatActivity(){
                     true
                 }
                 com.nutrition.core.R.id.profile_item->{
-                    Log.d("TAG","profileFragment clicked")
                     navController.navigate(R.id.profileFragment)
                     true
                 }
-                com.nutrition.core.R.id.profile_item->{
+                com.nutrition.core.R.id.search_item->{
                     navController.navigate(R.id.searchFragment)
                     true
                 }

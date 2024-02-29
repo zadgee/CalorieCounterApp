@@ -16,6 +16,7 @@ import application.di.DaggerApplicationComponent
 import application.di.UseCasesModule
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import componentProvider.CongratsComponentProvider
+import domain.SearchComponentProvider
 import domain.di.DaggerAuthComponent
 import domain.di.AuthModule
 import domain.repo.ProfileComponentProvider
@@ -24,14 +25,16 @@ import glue.email_verification.di.EmailVerificationModule
 import glue.forgot_password.di.ForgotPasswordModule
 import glue.navigation.DaggerNavigationComponent
 import glue.profile.di.ProfileModule
+import glue.search.di.SearchModule
 import glue.sign_in.di.SignInModule
 import glue.sign_up.di.SignUpModule
 import presentation.fragment.FragmentCongrats
+import presentation.fragment.SearchFragment
 import presentation.fragment.UserProfileFragment
 
 class CalorieCountingApplication:Application(), SignUpComponentProvider, SignInComponentProvider,
   EmailVerificationComponentProvider,ForgotPasswordComponentProvider, CongratsComponentProvider,
-  ProfileComponentProvider,
+  ProfileComponentProvider, SearchComponentProvider,
   Configuration.Provider
 {
 
@@ -106,6 +109,11 @@ class CalorieCountingApplication:Application(), SignUpComponentProvider, SignInC
             ))
         .build()
 
+    private val searchComponent = applicationComponent
+        .searchComponent()
+        .searchModule(SearchModule(this))
+        .build()
+
     override fun provideViewModelFactory(fragment: EmailVerificationFragment) {
         return emailVerificationComponent.inject(fragment)
     }
@@ -129,6 +137,14 @@ class CalorieCountingApplication:Application(), SignUpComponentProvider, SignInC
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder().build()
 
+    override fun provideProfileComponent(fragment: UserProfileFragment) {
+        return profileComponent.inject(fragment)
+    }
+
+    override fun provideViewModelFactory(fragment: SearchFragment) {
+        return searchComponent.inject(fragment)
+    }
+
     override fun onCreate() {
         super.onCreate()
         WorkManager.initialize(
@@ -137,9 +153,5 @@ class CalorieCountingApplication:Application(), SignUpComponentProvider, SignInC
         FirebaseCrashlytics
             .getInstance()
             .setCrashlyticsCollectionEnabled(true)
-    }
-
-    override fun provideProfileComponent(fragment: UserProfileFragment) {
-        return profileComponent.inject(fragment)
     }
 }

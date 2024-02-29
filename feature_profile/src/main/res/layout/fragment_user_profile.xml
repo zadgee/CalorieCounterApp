@@ -4,9 +4,8 @@
     android:layout_height="match_parent"
     tools:context="presentation.fragment.UserProfileFragment"
     android:orientation="vertical"
-    style="@style/backgroundColor"
+    style="@style/backgroundColorInAuthorizedScreens"
     android:gravity="center">
-
 
     <LinearLayout
         android:id="@+id/profileImageLayout"
@@ -25,38 +24,32 @@
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:orientation="vertical">
-
         <TextView
             android:gravity="center"
             android:id="@+id/specificUserName"
             style="@style/textColors"
             android:layout_width="150dp"
             android:layout_height="50dp"
-            android:fontFamily="@font/title_font_splash"
+            android:fontFamily="@font/bentonsans_bold"
             android:text="Username"
             android:textSize="30sp" />
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="219dp"
         android:layout_height="54dp"
         android:orientation="vertical">
-
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/signOutButton"
             android:layout_width="219dp"
             android:layout_height="54dp"
             android:background="@drawable/button_shape"
             android:text="@string/sign_out"
-            android:fontFamily="@font/title_font_splash"
+            android:fontFamily="@font/bentonsans_bold"
             android:gravity="center"
             android:textSize="20sp"
             style="@style/textColors"
             />
-
     </LinearLayout>
-    
-
 
 </LinearLayout>

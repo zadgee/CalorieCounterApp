@@ -1,3 +1,7 @@
 com.nutrition.feature_search
+id adViewInsideSearch
+id imageView
+id searchButton
+id searchFoodView
 layout fragment_search
 string search_your_favourite_food

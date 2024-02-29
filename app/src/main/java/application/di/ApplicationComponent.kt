@@ -7,6 +7,7 @@ import glue.email_verification.di.EmailVerificationComponent
 import glue.forgot_password.di.ForgotPasswordComponent
 import glue.navigation.NavigationComponent
 import glue.profile.di.ProfileComponent
+import glue.search.di.SearchComponent
 import glue.sign_in.di.SignInComponent
 import glue.sign_up.di.SignUpComponent
 
@@ -28,6 +29,7 @@ interface ApplicationComponent{
     fun forgotPasswordComponent():ForgotPasswordComponent.Builder
     fun congratsComponent(): CongratsComponent.Builder
     fun profileComponent():ProfileComponent.Builder
+    fun searchComponent():SearchComponent.Builder
 
     @Component.Builder
     interface Builder{

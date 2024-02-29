@@ -13,6 +13,10 @@
         <item name="android:background">@drawable/rounded_corner_for_screens</item>
     </style>
 
+    <style name="backgroundColorInAuthorizedScreens" parent="Base.V21.Theme.CalorieCountingApp">
+        <item name="android:background">@drawable/rounded_corners_authorized_screens</item>
+    </style>
+
     <style name="backgroundColorForRecyclerViewItems">
         <item name="android:background">@drawable/rounded_corner_for_screens</item>
     </style>
@@ -20,7 +24,6 @@
     <style name="textFieldsStyle" parent="Base.V21.Theme.CalorieCountingApp">
         <item name="android:background">@drawable/rounded_corner_for_fields</item>
         <item name="android:drawableStart">@drawable/profile</item>
-        <item name="fontFamily">@font/textfields_font</item>
         <item name="android:drawablePadding">14dp</item>
         <item name="android:padding">24dp</item>
         <item name="android:focusable">true</item>
@@ -30,12 +33,10 @@
         <item name="android:maxLines">1</item>
     </style>
 
-
-
-    <style name="bottomNavigationBarStyle">
+    <style name="bottomNavigationBarStyle" parent="Base.V21.Theme.CalorieCountingApp">
         <item name="android:background">@drawable/rounded_corner_bottom_nav_view</item>
         <item name="menu">@menu/navigation_menu</item>
-        <item name="android:fontFamily">@font/title_font_splash</item>
+        <item name="android:fontFamily">@font/bentonsans_bold</item>
         <item name="itemTextColor">@color/customBlack</item>
         <item name="itemRippleColor">@color/colorForActiveFragmentInNavigationBar</item>
         <item name="android:textColor">@color/customBlack</item>
@@ -45,12 +46,22 @@
 
     <style name="googleButtonStyle" parent="Base.V21.Theme.CalorieCountingApp">
         <item name="android:background">@drawable/rounded_corner_for_fields</item>
-        <item name="android:fontFamily">@font/title_font_splash</item>
+        <item name="android:fontFamily">@font/bentonsans_bold</item>
         <item name="android:drawableStart">@drawable/google_icon</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">23dp</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
+
+    <style name="searchViewStyle" parent="Base.V21.Theme.CalorieCountingApp">
+        <item name="android:textColorHint">@color/whatDoYouWantToSearchLight</item>
+        <item name="android:background">@drawable/searchview_light_shape</item>
+        <item name="android:searchHintIcon">@drawable/search_image_orange</item>
+        <item name="android:searchIcon">@drawable/search_image_orange</item>
+        <item name="android:editTextColor">@color/whatDoYouWantToSearchLight</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textSize">13sp</item>
+    </style>
     
 </resources>
